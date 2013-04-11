@@ -11,6 +11,7 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-karma');
 
   /**
    * The `build` directory contains our custom Grunt tasks for using testacular
@@ -64,7 +65,7 @@ module.exports = function ( grunt ) {
       tpljs: [ '<%= distdir %>/tmp/**/*.js' ],
       sass: [ 'src/scss/main.scss' ],
       html: [ 'src/index.html' ],
-      unit: [ 'src/**/*.spec.js' ]
+      karma: [ 'test/**/*.spec.js' ]
     },
 
     /**
@@ -170,11 +171,11 @@ module.exports = function ( grunt ) {
         'Gruntfile.js',
         '<%= src.js %>',
         '<%= src.tpljs %>',
-        '<%= src.unit %>',
+        '<%= src.karma %>',
         '!src/components/placeholders/**/*'
       ],
-      test: [
-        '<%= src.unit %>'
+      karma: [
+        '<%= src.karma %>'
       ],
       gruntfile: [
         'Gruntfile.js'
@@ -219,11 +220,12 @@ module.exports = function ( grunt ) {
     },
 
     /**
-     * The Testacular configurations.
+     * The Karma configurations.
      */
-    test: {
+    karma: {
       unit: {
-        conf: 'testacular/testacular-unit.js'
+        configFile: 'karma.conf.js',
+        singleRun: true
       }
     },
 
@@ -256,7 +258,7 @@ module.exports = function ( grunt ) {
         files: [
           '<%= src.js %>'
         ],
-        tasks: [ 'jshint:src', 'test:unit', 'concat:dist', 'uglify:dist' ]
+        tasks: [ 'jshint:src', 'karma:unit', 'concat:dist', 'uglify:dist' ]
       },
 
       /**
@@ -304,11 +306,11 @@ module.exports = function ( grunt ) {
        * unit tests. However, since the `app` module requires the compiled
        * templates, we must also run the `html2js` task.
        */
-      unittest: {
+      karma: {
         files: [
-          '<%= src.unit %>'
+          '<%= src.karma %>'
         ],
-        tasks: [ 'jshint:test', 'test:unit' ]
+        tasks: [ 'jshint:karma', 'karma:unit' ]
       }
     }
   });
@@ -327,13 +329,13 @@ module.exports = function ( grunt ) {
    * The default task is to build.
    */
   grunt.registerTask( 'default', [ 'build' ] );
-  grunt.registerTask( 'build', ['clean', 'html2js', 'jshint', 'test', 'concat', 'uglify', 'sass', 'index', 'copy'] );
+  grunt.registerTask( 'build', ['clean', 'html2js', 'jshint', 'karma', 'concat', 'uglify', 'sass', 'index', 'copy'] );
 
   /**
    * A task to build the project, without some of the slower processes. This is
    * used during development and testing and is part of the `watch`.
    */
-  grunt.registerTask( 'quick-build', ['clean', 'html2js', 'jshint', 'test', 'concat', 'index', 'copy'] );
+  grunt.registerTask( 'quick-build', ['clean', 'html2js', 'jshint', 'karma', 'concat', 'index', 'copy'] );
 
   /**
    * The index.html template includes the stylesheet and javascript sources
