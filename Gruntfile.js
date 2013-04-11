@@ -10,7 +10,6 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-
   grunt.loadNpmTasks('grunt-contrib-sass');
 
   /**
@@ -63,6 +62,7 @@ module.exports = function ( grunt ) {
       atpl: [ 'src/app/**/*.tpl.html' ],
       ctpl: [ 'src/components/**/*.tpl.html' ],
       tpljs: [ '<%= distdir %>/tmp/**/*.js' ],
+      sass: [ 'src/scss/main.scss' ],
       html: [ 'src/index.html' ],
       unit: [ 'src/**/*.spec.js' ]
     },
@@ -140,6 +140,20 @@ module.exports = function ( grunt ) {
       dist: {
         files: {
           '<%= distdir %>/assets/<%= pkg.name %>.min.js': [ '<%= distdir %>/assets/<%= pkg.name %>.js' ]
+        }
+      }
+    },
+
+    /**
+     * Use SCSS as Preprocessor for our CSS files
+     */
+    sass: {
+      build: {
+        src: [ '<%= src.sass %>' ],
+        dest: '<%= distdir %>/assets/<%= pkg.name %>.css',
+        options: {
+          style: 'expanded',
+          debugInfo: true
         }
       }
     },
@@ -246,6 +260,16 @@ module.exports = function ( grunt ) {
       },
 
       /**
+       * When SCSS files changes, we need to compile them to css
+       */
+      sass: {
+        files: [
+          '<%= src.sass %>'
+        ],
+        tasks: [ 'sass' ]
+      },
+
+      /**
        * When assets are changed, copy them. Note that this will *not* copy new
        * files, so this is probably not very useful.
        */
@@ -303,7 +327,7 @@ module.exports = function ( grunt ) {
    * The default task is to build.
    */
   grunt.registerTask( 'default', [ 'build' ] );
-  grunt.registerTask( 'build', ['clean', 'html2js', 'jshint', 'test', 'concat', 'uglify', 'index', 'copy'] );
+  grunt.registerTask( 'build', ['clean', 'html2js', 'jshint', 'test', 'concat', 'uglify', 'sass', 'index', 'copy'] );
 
   /**
    * A task to build the project, without some of the slower processes. This is
