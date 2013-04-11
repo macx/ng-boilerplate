@@ -11,6 +11,8 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
+  grunt.loadNpmTasks('grunt-contrib-sass');
+
   /**
    * The `build` directory contains our custom Grunt tasks for using testacular
    * and compiling our templates into the cache. If we just tell Grunt about the
