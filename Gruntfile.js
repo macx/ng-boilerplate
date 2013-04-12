@@ -12,13 +12,14 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-html2js');
 
   /**
    * The `build` directory contains our custom Grunt tasks for using testacular
    * and compiling our templates into the cache. If we just tell Grunt about the
    * directory, it will load all the requisite JavaSript files for us.
    */
-  grunt.loadTasks('build');
+  // grunt.loadTasks('build');
 
   /**
    * This is the configuration object Grunt uses to give each plugin its
@@ -206,7 +207,7 @@ module.exports = function ( grunt ) {
       app: {
         src: [ '<%= src.atpl %>' ],
         base: 'src/app',
-        dest: 'dist/tmp'
+        dest: 'dist/tmp/app.templates.js'
       },
 
       /**
@@ -215,7 +216,7 @@ module.exports = function ( grunt ) {
       component: {
         src: [ '<%= src.ctpl %>' ],
         base: 'src/components',
-        dest: 'dist/tmp'
+        dest: 'dist/tmp/component.templates.js'
       }
     },
 

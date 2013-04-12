@@ -25,7 +25,7 @@ angular.module( 'ngBoilerplate.home', [
 .config([ '$routeProvider', function config( $routeProvider ) {
   $routeProvider.when( '/home', {
     controller: 'HomeCtrl',
-    templateUrl: 'home/home.tpl.html'
+    templateUrl: 'app/home/home.tpl.html'
   });
 }])
 

@@ -7,13 +7,13 @@ angular.module( 'ngBoilerplate.about', [
 .config([ '$routeProvider', function config( $routeProvider ) {
   $routeProvider.when( '/about', {
     controller: 'AboutCtrl',
-    templateUrl: 'about/about.tpl.html'
+    templateUrl: 'app/about/about.tpl.html'
   });
 }])
 
 .controller( 'AboutCtrl', [ '$scope', 'titleService', function AboutCtrl( $scope, titleService ) {
   titleService.setTitle( 'What is It?' );
-  
+
   // This is simple a demo for UI Boostrap.
   $scope.dropdownDemoItems = [
     "The first choice!",
