@@ -20,6 +20,7 @@
   "trailing": true,
   "smarttabs": true,
   "predef": [
+    "inject",
     "describe",
     "describe",
     "it",

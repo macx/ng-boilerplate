@@ -1,21 +1,21 @@
-angular.module( 'ngBoilerplate', [
+'use strict';
+
+angular.module('ngBoilerplate', [
   'templates-app',
   'templates-component',
   'ngBoilerplate.home',
-  'ngBoilerplate.about',
-  'activeIfCurrent'
+  'ngBoilerplate.about'
 ])
 
-.config( function myAppConfig ( $routeProvider ) {
+.config(function myAppConfig($routeProvider) {
   $routeProvider.otherwise({ redirectTo: '/home' });
 })
 
-.run([ 'titleService', function run ( titleService ) {
-  titleService.setSuffix( ' | ngBoilerplate' );
+.run([ 'titleService', function run(titleService) {
+  titleService.setSuffix(' | ngBoilerplate');
 }])
 
-.controller( 'AppCtrl', [ '$scope', '$location', function AppCtrl ( $scope, $location ) {
-}])
-
-;
+.controller('AppCtrl', ['$scope', '$location', function AppCtrl($scope, $location) {
+  console.log($location);
+}]);
 

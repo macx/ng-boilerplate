@@ -1,9 +1,3 @@
-$test: #00FFFF;
-
-body {
-  background-color: $test;
-}
-
-section {
-  background-color: $test;
-}
+// Modules and Variables
+@import "partials/base";
+@import "modules/all";

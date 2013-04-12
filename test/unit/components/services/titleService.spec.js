@@ -1,0 +1,35 @@
+'use strict';
+
+describe('titleService', function () {
+  var titleService;
+
+  beforeEach(module('titleService'));
+
+  beforeEach(inject(function ($document, titleService) {
+    titleService = titleService;
+  }));
+
+  it('should set a title without a suffix', inject(function () {
+    var title = 'new title';
+    titleService.setTitle(title);
+
+    expect(titleService.getTitle()).toEqual(title);
+  }));
+
+  it('should allow specification a suffix', inject(function () {
+    var suffix = ' :: new suffix';
+    titleService.setSuffix(suffix);
+
+    expect(titleService.getSuffix()).toEqual(suffix);
+  }));
+
+  it('should set the title, including the suffix', inject(function () {
+    var title = 'New Title';
+    var suffix = ' :: new suffix';
+
+    titleService.setSuffix(suffix);
+    titleService.setTitle(title);
+    expect(titleService.getTitle()).toEqual(title + suffix);
+  }));
+});
+

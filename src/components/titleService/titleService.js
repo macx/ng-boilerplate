@@ -1,26 +1,28 @@
-angular.module( 'titleService', [])
+'use strict';
 
-.factory( 'titleService', [ '$document', function ( $document ) {
+angular.module('titleService', [])
+
+.factory('titleService', ['$document', function ($document) {
   var suffix, title;
-  
+
   var titleService = {
-    setSuffix: function setSuffix ( s ) {
+    setSuffix: function setSuffix(s) {
       suffix = s;
     },
-    getSuffix: function getSuffix () {
+    getSuffix: function getSuffix() {
       return suffix;
     },
-    setTitle: function setTitle ( t ) {
-      if ( angular.isDefined( suffix ) ) {
+    setTitle: function setTitle(t) {
+      if (angular.isDefined(suffix)) {
         title = t + suffix;
       } else {
         title = t;
       }
 
-      $document.prop( 'title', title );
+      $document.prop('title', title);
     },
-    getTitle: function getTitle () {
-      return $document.prop( 'title' );
+    getTitle: function getTitle() {
+      return $document.prop('title');
     }
   };
 

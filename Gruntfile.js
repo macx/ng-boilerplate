@@ -1,4 +1,6 @@
-module.exports = function ( grunt ) {
+'use strict';
+
+module.exports = function (grunt) {
 
   /**
    * Load required Grunt tasks. These are installed based on the versions listed
@@ -19,7 +21,6 @@ module.exports = function ( grunt ) {
    * and compiling our templates into the cache. If we just tell Grunt about the
    * directory, it will load all the requisite JavaSript files for us.
    */
-  // grunt.loadTasks('build');
 
   /**
    * This is the configuration object Grunt uses to give each plugin its
@@ -35,7 +36,7 @@ module.exports = function ( grunt ) {
      * We read in our `package.json` file so we can access the package name and
      * version. It's already there, so we don't repeat ourselves here.
      */
-    pkg: grunt.file.readJSON("package.json"),
+    pkg: grunt.file.readJSON('package.json'),
 
     /**
      * The banner is the comment that is placed at the top of our compiled
@@ -64,7 +65,7 @@ module.exports = function ( grunt ) {
       atpl: [ 'src/app/**/*.tpl.html' ],
       ctpl: [ 'src/components/**/*.tpl.html' ],
       tpljs: [ '<%= distdir %>/tmp/**/*.js' ],
-      sass: [ 'src/scss/main.scss' ],
+      sass: [ 'src/scss/**/*.scss' ],
       html: [ 'src/index.html' ],
       karma: [ 'test/**/*.spec.js' ]
     },
@@ -87,7 +88,7 @@ module.exports = function ( grunt ) {
             cwd: 'src/assets',
             expand: true
           }
-       ]
+        ]
       }
     },
 
@@ -171,7 +172,7 @@ module.exports = function ( grunt ) {
       src: [
         'Gruntfile.js',
         '<%= src.js %>',
-        '<%= src.tpljs %>',
+        // '<%= src.tpljs %>',
         '<%= src.karma %>',
         '!src/components/placeholders/**/*'
       ],
@@ -182,15 +183,8 @@ module.exports = function ( grunt ) {
         'Gruntfile.js'
       ],
       options: {
-        curly: true,
-        immed: true,
-        newcap: true,
-        noarg: true,
-        sub: true,
-        boss: true,
-        eqnull: true
-      },
-      globals: {}
+        jshintrc: '.jshintrc',
+      }
     },
 
     /**
@@ -323,26 +317,27 @@ module.exports = function ( grunt ) {
    * `delta`) and then add a new task called `watch` that does a clean build
    * before watching for changes.
    */
-  grunt.renameTask( 'watch', 'delta' );
-  grunt.registerTask( 'watch', [ 'default', 'delta' ] );
+  grunt.renameTask('watch', 'delta');
+  grunt.registerTask('watch', ['default', 'delta']);
 
   /**
    * The default task is to build.
    */
-  grunt.registerTask( 'default', [ 'build' ] );
-  grunt.registerTask( 'build', ['clean', 'html2js', 'jshint', 'karma', 'concat', 'uglify', 'sass', 'index', 'copy'] );
+  grunt.registerTask('default', ['build']);
+  grunt.registerTask('build', ['clean', 'html2js', 'jshint', 'karma', 'concat', 'uglify', 'sass', 'index', 'copy']);
 
+  grunt.registerTask('lint', ['jshint']);
   /**
    * A task to build the project, without some of the slower processes. This is
    * used during development and testing and is part of the `watch`.
    */
-  grunt.registerTask( 'quick-build', ['clean', 'html2js', 'jshint', 'karma', 'concat', 'index', 'copy'] );
+  grunt.registerTask('quick-build', ['clean', 'html2js', 'jshint', 'karma', 'concat', 'index', 'copy']);
 
   /**
    * The index.html template includes the stylesheet and javascript sources
    * based on dynamic names calculated in this Gruntfile. This task compiles it.
    */
-  grunt.registerTask( 'index', 'Process index.html template', function () {
+  grunt.registerTask('index', 'Process index.html template', function () {
     grunt.file.copy('src/index.html', 'dist/index.html', { process: grunt.template.process });
   });
 

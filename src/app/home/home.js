@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Each section of the site has its own module. It probably also has
  * submodules, though this boilerplate is too simple to demonstrate it. Within
@@ -12,9 +13,8 @@
  * The dependencies block here is also where component dependencies should be
  * specified, as shown below.
  */
-angular.module( 'ngBoilerplate.home', [
-  'titleService',
-  'plusOne'
+angular.module('ngBoilerplate.home', [
+  'titleService'
 ])
 
 /**
@@ -22,8 +22,8 @@ angular.module( 'ngBoilerplate.home', [
  * will handle ensuring they are all available at run-time, but splitting it
  * this way makes each module more "self-contained".
  */
-.config([ '$routeProvider', function config( $routeProvider ) {
-  $routeProvider.when( '/home', {
+.config(['$routeProvider', function config($routeProvider) {
+  $routeProvider.when('/home', {
     controller: 'HomeCtrl',
     templateUrl: 'app/home/home.tpl.html'
   });
@@ -32,8 +32,8 @@ angular.module( 'ngBoilerplate.home', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'HomeCtrl', [ '$scope', 'titleService', function HomeController( $scope, titleService ) {
-  titleService.setTitle( 'Home' );
+.controller('HomeCtrl', ['$scope', 'titleService', function HomeController($scope, titleService) {
+  titleService.setTitle('Home');
 }])
 
 ;
