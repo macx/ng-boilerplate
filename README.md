@@ -6,30 +6,40 @@ An opinionated kickstarter for [AngularJS](http://angularjs.org) projects.
 
 ## Quick Start
 
-Install Node.js and then:
+### Installation
+
+Following global Tools are needed, if you do not have them already:
 
 ```sh
-$ git clone --recursive git://github.com/joshdmiller/ng-boilerplate
-$ cd ng-boilerplate
-$ sudo npm -g install grunt-cli testacular
-$ npm install
-$ grunt watch
+$ npm install -g grunt-cli
+$ npm install -g karma
+$ npm install -g bower
 ```
 
-Happy hacking!
+Clone the repository and install all dependencies:
 
-## Purpose
+```sh
+$ git clone git@github.com:neoskop/ng-boilerplate.git 
+$ cd ng-boilerplate
+$ npm install && bower install
+```
 
-`ngBoilerplate` is designed to make life easy by providing a basic framework
-with which to kickstart AngularJS projects. It contains a best-practice
-directory structure to ensure code reusability and maximum scalability.
-ngBoilerplate also comes prepackaged with the most popular design frameworks
-around: [Twitter Bootstrap](http://getbootstrap.com), [UI
-Bootstrap](http://angular-ui.github.com/bootstrap), [Font
-Awesome](http://fortawesome.github.com/Font-Awesome), and
-[LESS](http://lesscss.org).  Lastly, it contains a sophisticated Grunt-based
-build system to ensure maximum productivity.  All you have to do is clone it and
-start coding!
+For develop within this project you need [Grunt](http://gruntjs.com), the following Tasks are available:
+
+```sh
+$ grunt # actually this builds the project
+$ grunt watch # this task waits for filechanges and rebuilds the project
+```
+
+### Testing (Unit, E2E, Midway)
+
+All Test are located in the `test` folder and Test-Runner for this project is 
+[Karma](http://karma-runner.github.io/).
+
+```sh
+$ karma start # starts watching filechanges and runs trough all test
+$ karma run   # if you want to run tests manually (without watch changes)
+```
 
 ## Philosophy
 

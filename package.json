@@ -1,19 +1,23 @@
 {
   "author": "Josh David Miller",
   "name": "ng-boilerplate",
-  "version": "0.1.0-SNAPSHOT",
-  "homepage": "http://bit.ly/ng-boilerplate",
+  "version": "0.1.0",
+  "homepage": "https://github.com/neoskop/ng-boilerplate",
   "licenses": {
     "type": "MIT",
     "url": "https://raw.github.com/joshdmiller/ng-boilerplate/master/LICENSE"
   },
-  "bugs": "https://github.com/joshdmiller/ng-boilerplate/issues",
+  "bugs": "https://github.com/neoskop/ng-boilerplate/issues",
   "repository": {
     "type": "git",
-    "url": "git@github.com:joshdmiller/ng-boilerplate.git"
+    "url": "git@github.com:neoskop/ng-boilerplate.git"
+  },
+  "scripts": {
+    "test": "./node_modules/karma/bin/karma start --browsers Firefox --single-run"
   },
   "dependencies": {},
   "devDependencies": {
+    "karma": "0.8.x",
     "grunt": "~0.4.1",
     "grunt-contrib-clean": "~0.4.0",
     "grunt-contrib-copy": "~0.4.0",
