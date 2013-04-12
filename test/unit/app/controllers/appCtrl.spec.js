@@ -1,19 +1,19 @@
 'use strict';
 
 describe('AppCtrl', function () {
-  describe('isCurrentUrl', function () {
-    var AppCtrl, $scope;
+  beforeEach(module('ngBoilerplate'));
 
-    beforeEach(module('ngBoilerplate'));
+  var AppCtrl, scope;
 
-    beforeEach(inject(function ($controller, $location, $rootScope) {
-      $location = $location;
-      $scope = $rootScope.$new();
-      AppCtrl = $controller('AppCtrl', { $location: $location, $scope: $scope });
-    }));
+  // Initialize the controller and a mock scope
+  beforeEach(inject(function ($controller, $rootScope) {
+    scope = $rootScope.$new();
+    AppCtrl = $controller('AppCtrl', {
+      $scope: scope
+    });
+  }));
 
-    it('should pass a dummy test', inject(function () {
-      expect(AppCtrl).toBeTruthy();
-    }));
+  it('should attach a list of awesomeThings to the scope', function () {
+    expect(scope.awesomeThings.length).toBe(3);
   });
 });

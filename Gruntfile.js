@@ -307,7 +307,7 @@ module.exports = function (grunt) {
         files: [
           '<%= src.karma %>'
         ],
-        tasks: ['jshint:karma', 'karma:unit']
+        tasks: ['jshint:karma']
       }
     }
   });

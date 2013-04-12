@@ -15,7 +15,11 @@ angular.module('ngBoilerplate', [
   titleService.setSuffix(' | ngBoilerplate');
 }])
 
-.controller('AppCtrl', ['$scope', '$location', function AppCtrl($scope, $location) {
-  console.log($location);
+.controller('AppCtrl', ['$scope', function AppCtrl($scope) {
+  $scope.awesomeThings = [
+    'HTML5',
+    'CSS',
+    'Some Stuff'
+  ];
 }]);
 

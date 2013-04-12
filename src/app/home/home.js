@@ -34,7 +34,4 @@ angular.module('ngBoilerplate.home', [
  */
 .controller('HomeCtrl', ['$scope', 'titleService', function HomeController($scope, titleService) {
   titleService.setTitle('Home');
-}])
-
-;
-
+}]);
