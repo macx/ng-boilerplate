@@ -172,7 +172,8 @@ module.exports = function (grunt) {
       src: [
         'Gruntfile.js',
         '<%= src.js %>',
-        '<%= src.tpljs %>',
+        // do we really need to lint this automated files?
+        // '<%= src.tpljs %>',
         '<%= src.karma %>',
         '!src/components/placeholders/**/*'
       ],
@@ -183,6 +184,7 @@ module.exports = function (grunt) {
         'Gruntfile.js'
       ],
       options: {
+        // we are using the .jshintrc file!
         jshintrc: '.jshintrc',
       }
     },
