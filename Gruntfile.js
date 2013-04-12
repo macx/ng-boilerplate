@@ -326,13 +326,14 @@ module.exports = function (grunt) {
    * The default task is to build.
    */
   grunt.registerTask('default', ['build']);
-  grunt.registerTask('build', ['clean', 'html2js', 'jshint', 'karma', 'concat', 'uglify', 'sass', 'index', 'copy']);
+  grunt.registerTask('build', ['quick-build', 'karma']);
+
 
   /**
    * A task to build the project, without some of the slower processes. This is
    * used during development and testing and is part of the `watch`.
    */
-  grunt.registerTask('quick-build', ['clean', 'html2js', 'jshint', 'karma', 'concat', 'index', 'copy']);
+  grunt.registerTask('quick-build', ['clean', 'html2js', 'jshint', 'concat', 'index', 'copy']);
 
   /**
    * The index.html template includes the stylesheet and javascript sources
