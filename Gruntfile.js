@@ -61,19 +61,19 @@ module.exports = function (grunt) {
      * same, but for our app's code. `html` is just our main HTML file
      */
     src: {
-      js: [ 'src/**/*.js', '!src/**/*.spec.js' ],
-      atpl: [ 'src/app/**/*.tpl.html' ],
-      ctpl: [ 'src/components/**/*.tpl.html' ],
-      tpljs: [ '<%= distdir %>/tmp/**/*.js' ],
-      sass: [ 'src/scss/**/*.scss' ],
-      html: [ 'src/index.html' ],
-      karma: [ 'test/**/*.spec.js' ]
+      js: ['src/**/*.js', '!src/**/*.spec.js'],
+      atpl: ['src/app/**/*.tpl.html'],
+      ctpl: ['src/components/**/*.tpl.html'],
+      tpljs: ['<%= distdir %>/tmp/**/*.js'],
+      sass: ['src/scss/**/*.scss'],
+      html: ['src/index.html'],
+      karma: ['test/**/*.spec.js']
     },
 
     /**
      * The directory to delete when `grunt clean` is executed.
      */
-    clean: [ '<%= distdir %>' ],
+    clean: ['<%= distdir %>'],
 
     /**
      * `grunt copy` just copies files from A to B. We use it here to copy our
@@ -83,7 +83,7 @@ module.exports = function (grunt) {
       assets: {
         files: [
           {
-            src: [ '**' ],
+            src: ['**'],
             dest: '<%= distdir %>/assets/',
             cwd: 'src/assets',
             expand: true
@@ -114,7 +114,7 @@ module.exports = function (grunt) {
         options: {
           banner: '<%= meta.banner %>'
         },
-        src: [ 'module.prefix', '<%= src.js %>', '<%= src.tpljs %>', 'module.suffix' ],
+        src: ['module.prefix', '<%= src.js %>', '<%= src.tpljs %>', 'module.suffix'],
         dest: '<%= distdir %>/assets/<%= pkg.name %>.js'
       },
 
@@ -142,7 +142,7 @@ module.exports = function (grunt) {
       },
       dist: {
         files: {
-          '<%= distdir %>/assets/<%= pkg.name %>.min.js': [ '<%= distdir %>/assets/<%= pkg.name %>.js' ]
+          '<%= distdir %>/assets/<%= pkg.name %>.min.js': ['<%= distdir %>/assets/<%= pkg.name %>.js']
         }
       }
     },
@@ -152,7 +152,7 @@ module.exports = function (grunt) {
      */
     sass: {
       build: {
-        src: [ '<%= src.sass %>' ],
+        src: ['<%= src.sass %>'],
         dest: '<%= distdir %>/assets/<%= pkg.name %>.css',
         options: {
           style: 'expanded',
@@ -172,7 +172,7 @@ module.exports = function (grunt) {
       src: [
         'Gruntfile.js',
         '<%= src.js %>',
-        // '<%= src.tpljs %>',
+        '<%= src.tpljs %>',
         '<%= src.karma %>',
         '!src/components/placeholders/**/*'
       ],
@@ -199,7 +199,7 @@ module.exports = function (grunt) {
        * These are the templates from `src/app`.
        */
       app: {
-        src: [ '<%= src.atpl %>' ],
+        src: ['<%= src.atpl %>'],
         base: 'src/app',
         dest: 'dist/tmp/app.templates.js'
       },
@@ -208,7 +208,7 @@ module.exports = function (grunt) {
        * These are the templates from `src/components`.
        */
       component: {
-        src: [ '<%= src.ctpl %>' ],
+        src: ['<%= src.ctpl %>'],
         base: 'src/components',
         dest: 'dist/tmp/component.templates.js'
       }
@@ -242,7 +242,7 @@ module.exports = function (grunt) {
        */
       gruntfile: {
         files: 'Gruntfile.js',
-        tasks: [ 'jshint:gruntfile' ]
+        tasks: ['jshint:gruntfile']
       },
 
       /**
@@ -253,7 +253,7 @@ module.exports = function (grunt) {
         files: [
           '<%= src.js %>'
         ],
-        tasks: [ 'jshint:src', 'karma:unit', 'concat:dist', 'uglify:dist' ]
+        tasks: ['jshint:src', 'karma:unit', 'concat:dist', 'uglify:dist']
       },
 
       /**
@@ -263,7 +263,7 @@ module.exports = function (grunt) {
         files: [
           '<%= src.sass %>'
         ],
-        tasks: [ 'sass' ]
+        tasks: ['sass']
       },
 
       /**
@@ -274,15 +274,15 @@ module.exports = function (grunt) {
         files: [
           'src/assets/**/*'
         ],
-        tasks: [ 'copy' ]
+        tasks: ['copy']
       },
 
       /**
        * When index.html changes, we need to compile just it.
        */
       html: {
-        files: [ '<%= src.html %>' ],
-        tasks: [ 'index' ]
+        files: ['<%= src.html %>'],
+        tasks: ['index']
       },
 
       /**
@@ -293,7 +293,7 @@ module.exports = function (grunt) {
           '<%= src.atpl %>',
           '<%= src.ctpl %>'
         ],
-        tasks: [ 'html2js', 'concat:dist', 'uglify:dist' ]
+        tasks: ['html2js', 'concat:dist', 'uglify:dist']
       },
 
       /**
@@ -305,7 +305,7 @@ module.exports = function (grunt) {
         files: [
           '<%= src.karma %>'
         ],
-        tasks: [ 'jshint:karma', 'karma:unit' ]
+        tasks: ['jshint:karma', 'karma:unit']
       }
     }
   });
@@ -326,7 +326,6 @@ module.exports = function (grunt) {
   grunt.registerTask('default', ['build']);
   grunt.registerTask('build', ['clean', 'html2js', 'jshint', 'karma', 'concat', 'uglify', 'sass', 'index', 'copy']);
 
-  grunt.registerTask('lint', ['jshint']);
   /**
    * A task to build the project, without some of the slower processes. This is
    * used during development and testing and is part of the `watch`.
