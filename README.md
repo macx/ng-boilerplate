@@ -82,7 +82,7 @@ learn more.
   self-executing anonymous function to ensure no clashes with other libraries.
 - `package.json` - metadata about the app, used by NPM and our build script.
 
-### The Build System### The Build System
+### The Build System (Grunt Tasks)
 
 The best way to learn about the build system is by familiarizing yourself with
 Grunt and then reading through the heavily documented build script,
