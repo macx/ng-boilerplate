@@ -72,7 +72,7 @@ learn more.
 
 - `build/` - custom scripts for Grunt.
 - `src/` - our application sources. [Read more &raquo;](src/README.md)
-- `testacular` - test configuration.
+- `test` - test configuration.
 - `vendor` - files needed to make everything happen, but *not* libraries our
   application uses. [Read more &raquo;](vendor/README.md)
 - `Gruntfile.js` - our build script; see "The Build System" below.

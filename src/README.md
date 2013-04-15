@@ -13,14 +13,12 @@ src/
   |  |- app.js
   |  |- app.spec.js
   |- assets/
-  |  |- fonts/
   |- components/
-  |  |- placeholders/
-  |  |- ui-bootstrap/
-  |- less/
-  |  |- main.less
-  |  |- font-awesome.less
-  |  |- variables.less
+  |  |- titleService/
+  |- scss/
+  |  |- main.scss
+  |  |- modules/
+  |  |- partials/
   |- index.html
 ```
 
@@ -30,7 +28,7 @@ src/
   [Read more &raquo;](assets/README.md)
 - `src/components/` - third-party libraries or components likely to be reused in
   another application. [Read more &raquo;](components/README.md)
-- `src/less/` - LESS CSS files. [Read more &raquo;](less/README.md)
+- `src/scss/` - SASS/SCSS files. [Read more &raquo;](scss/README.md)
 - `src/index.html` - this is the HTML document of the single-page application.
   See below.
 

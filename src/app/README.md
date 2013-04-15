@@ -6,7 +6,6 @@
 src/
   |- app/
   |  |- home/
-  |  |- about/
   |  |- app.js
   |  |- app.spec.js
 ```
@@ -22,7 +21,7 @@ route `/products`, though this is in no way enforced. Products may then have
 subdirectories for "create", "view", "search", etc. The "view" submodule may
 then define a route of `/products/:id`, ad infinitum.
 
-As `ngBoilerplate` is quite minimal, take a look at the two provided submodules
+As `ngBoilerplate` is quite minimal, take a look at the provided submodule
 to gain a better understanding of how these are used as well as to get a
 glimpse of how powerful this simple construct can be.
 
@@ -45,13 +44,12 @@ app-wide dependencies that are required to assemble your app.
 angular.module( 'ngBoilerplate', [
   'app-templates',
   'component-templates',
-  'ngBoilerplate.home',
-  'ngBoilerplate.about'
+  'ngBoilerplate.home'
 ])
 ```
 
-With app modules broken down in this way, all routing is performed by the
-submodules we include, as that is where our app's functionality is really
+With app modules broken down in this way, **all routing is performed by the
+submodules** we include, as that is where our app's functionality is really
 defined.  So all we need to do in `app.js` is specify a default route to follow,
 which route of course is defined in a submodule. In this case, our `home` module
 is where we want to start, which has a defined route for `/home` in
