@@ -3,8 +3,7 @@
 angular.module('ngBoilerplate', [
   'templates-app',
   'templates-component',
-  'ngBoilerplate.home',
-  'ngBoilerplate.about'
+  'ngBoilerplate.home'
 ])
 
 .config(function myAppConfig($routeProvider) {
