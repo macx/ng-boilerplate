@@ -83,7 +83,7 @@ module.exports = function (grunt) {
       assets: {
         files: [
           {
-            src: ['**'],
+            src: ['**', '!README.md'],
             dest: '<%= distdir %>/assets/',
             cwd: 'src/assets',
             expand: true

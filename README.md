@@ -1,5 +1,4 @@
-# [ngBoilerplate](http://joshdmiller.github.com/ng-boilerplate) 
-[![Build Status](https://travis-ci.org/neoskop/ng-boilerplate.png?branch=master)](https://travis-ci.org/neoskop/ng-boilerplate)
+# [ngBoilerplate](http://joshdmiller.github.com/ng-boilerplate) [![Build Status](https://travis-ci.org/neoskop/ng-boilerplate.png?branch=master)](https://travis-ci.org/neoskop/ng-boilerplate)
 
 An opinionated kickstarter for [AngularJS](http://angularjs.org) projects.
 
@@ -30,8 +29,8 @@ $ npm install && bower install
 For develop within this project you need [Grunt](http://gruntjs.com), the following Tasks are available:
 
 ```sh
-$ grunt # actually this builds the project
-$ grunt watch # this task waits for filechanges and rebuilds the project
+$ grunt       # actually this builds the project
+$ grunt watch # this task waits for file changes and rebuilds the project
 ```
 
 ### Testing (Unit, E2E, Midway)
@@ -85,9 +84,9 @@ learn more.
 ### The Build System (Grunt Tasks)
 
 The best way to learn about the build system is by familiarizing yourself with
-Grunt and then reading through the heavily documented build script,
-`Gruntfile.js`. But what follows in this section is a quick introduction to the
-tasks provided.
+[Grunt](http://gruntjs.com) and then reading through the heavily documented build
+script, `Gruntfile.js`. But what follows in this section is a quick introduction to 
+the tasks provided.
 
 The driver of the process is the `delta` multi-task, which watches for file
 changes using `grunt-contrib-watch` and executes one of seven tasks when a file
