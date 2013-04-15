@@ -15,10 +15,12 @@ angular.module('ngBoilerplate', [
 }])
 
 .controller('AppCtrl', ['$scope', function AppCtrl($scope) {
-  $scope.awesomeThings = [
-    'HTML5',
-    'CSS',
-    'Some Stuff'
+  $scope.features = [
+    'Angular',
+    'Grunt',
+    'SASS',
+    'TDD, because it is the only way.',
+    'Full Bower Integration'
   ];
 }]);
 

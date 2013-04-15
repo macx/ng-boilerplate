@@ -50,7 +50,7 @@ $ karma run   # if you want to run tests manually (without watch changes)
 ng-boilerplate/
   |- src/
   |  |- app/
-  |  |  |- -app logic>
+  |  |  |- <app logic>
   |  |- assets/
   |  |  |- <static files>
   |  |- components/
