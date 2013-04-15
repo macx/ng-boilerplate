@@ -15,6 +15,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-html2js');
+  grunt.loadNpmTasks('grunt-bowerful');
 
   /**
    * The `build` directory contains our custom Grunt tasks for using testacular
@@ -118,21 +119,20 @@ module.exports = function (grunt) {
         dest: '<%= distdir %>/assets/<%= pkg.name %>.js'
       },
 
-      /**
-       * The `libs` target is for all third-party libraries we need to include
-       * in the final distribution. They will be concatenated into a single
-       * `libs.js` file.  One could combine this with the above for a single
-       * payload, but then concatenation order will obviously be important to
-       * get right.
-       */
-      libs: {
-        src: [
-          'vendor/angular/angular.js'
-        ],
-        dest: '<%= distdir %>/assets/libs.js'
-      }
     },
 
+    /**
+     * The Bower(ful) Task installs/concats all components according to the
+     * compontent.json (dependencies).
+     */
+    bowerful: {
+      dist: {
+        store: 'vendor',
+        dest: '<%= distdir %>/assets',
+        destfile: 'libs', // depends on components libs.css/libs.js
+        packages: grunt.file.readJSON('component.json').dependencies
+      }
+    },
     /**
      * Minify the sources!
      */
@@ -328,12 +328,11 @@ module.exports = function (grunt) {
   grunt.registerTask('default', ['build']);
   grunt.registerTask('build', ['quick-build', 'karma']);
 
-
   /**
    * A task to build the project, without some of the slower processes. This is
    * used during development and testing and is part of the `watch`.
    */
-  grunt.registerTask('quick-build', ['clean', 'html2js', 'jshint', 'concat', 'index', 'copy']);
+  grunt.registerTask('quick-build', ['clean', 'html2js', 'jshint', 'concat', 'bowerful', 'sass', 'index', 'copy']);
 
   /**
    * The index.html template includes the stylesheet and javascript sources
