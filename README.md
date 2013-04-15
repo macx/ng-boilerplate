@@ -23,7 +23,7 @@ Clone the repository and install all dependencies:
 ```sh
 $ git clone git@github.com:neoskop/ng-boilerplate.git 
 $ cd ng-boilerplate
-$ npm install && bower install
+$ npm install # bower install will be done by grunt-bowerful
 ```
 
 For develop within this project you need [Grunt](http://gruntjs.com), the following Tasks are available:
