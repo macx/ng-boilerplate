@@ -253,7 +253,7 @@ module.exports = function (grunt) {
         files: [
           '<%= src.js %>'
         ],
-        tasks: ['jshint:src', 'karma:unit', 'concat:dist', 'uglify:dist']
+        tasks: ['jshint:src', 'concat:dist', 'uglify:dist']
       },
 
       /**
