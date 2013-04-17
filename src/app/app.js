@@ -6,15 +6,15 @@ angular.module('ngBoilerplate', [
   'ngBoilerplate.home'
 ])
 
-.config(function myAppConfig($routeProvider) {
+.config(function($routeProvider) {
   $routeProvider.otherwise({ redirectTo: '/home' });
 })
 
-.run([ 'titleService', function run(titleService) {
+.run([ 'titleService', function(titleService) {
   titleService.setSuffix(' | ngBoilerplate');
 }])
 
-.controller('AppCtrl', ['$scope', function AppCtrl($scope) {
+.controller('AppCtrl', ['$scope', function($scope) {
   $scope.features = [
     'Angular',
     'Grunt',
