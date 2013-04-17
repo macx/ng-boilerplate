@@ -5,14 +5,15 @@ basePath = '';
 
 // list of files / patterns to load in the browser
 files = [
-  JASMINE,
-  JASMINE_ADAPTER,
   'vendor/angular/angular.js',
   'vendor/angular-mocks/angular-mocks.js',
   'dist/tmp/*.js',
   'src/**/*.js',
   'test/**/*.js'
 ];
+
+// chosen framework
+frameworks = ["jasmine"];
 
 // list of files to exclude
 exclude = [];
