@@ -17,7 +17,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "karma": "0.9.2",
+    "karma": "~0.8.5",
     "grunt": "~0.4.1",
     "grunt-contrib-clean": "~0.4.0",
     "grunt-contrib-copy": "~0.4.0",
