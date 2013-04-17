@@ -9,3 +9,4 @@ section {
   background-color: $white;
   padding: 20px
 }
+.simple   { @include border-radius(4px, 4px); }

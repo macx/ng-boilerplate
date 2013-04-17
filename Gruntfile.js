@@ -11,7 +11,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-contrib-compass');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-html2js');
   grunt.loadNpmTasks('grunt-bowerful');
@@ -65,7 +65,8 @@ module.exports = function (grunt) {
       atpl: ['src/app/**/*.tpl.html'],
       ctpl: ['src/components/**/*.tpl.html'],
       tpljs: ['<%= distdir %>/tmp/**/*.js'],
-      sass: ['src/scss/**/*.scss'],
+      scss: ['src/scss/**/*.scss'],
+      scssDir: ['src/scss'],
       html: ['src/index.html'],
       karma: ['test/**/*.spec.js']
     },
@@ -151,7 +152,7 @@ module.exports = function (grunt) {
      */
     sass: {
       build: {
-        src: ['<%= src.sass %>'],
+        src: [],
         dest: '<%= distdir %>/assets/<%= pkg.name %>.css',
         options: {
           style: 'expanded',
@@ -160,6 +161,15 @@ module.exports = function (grunt) {
       }
     },
 
+    compass: {
+      dist: {
+        options: {
+          sassDir: '<%= src.scssDir %>',
+          cssDir: '<%= distdir %>/assets/',
+          debugInfo: true
+        }
+      }
+    },
     /**
      * `jshint` defines the rules of our linter as well as which files we should
      * check. This file, all java script sources, and all our unit tests are
@@ -261,9 +271,9 @@ module.exports = function (grunt) {
        */
       sass: {
         files: [
-          '<%= src.sass %>'
+          '<%= src.scss %>'
         ],
-        tasks: ['sass']
+        tasks: ['compass']
       },
 
       /**
@@ -324,7 +334,7 @@ module.exports = function (grunt) {
    * The default task is to build.
    */
   grunt.registerTask('default', ['build']);
-  grunt.registerTask('build', ['quick-build', 'sass', 'karma']);
+  grunt.registerTask('build', ['quick-build', 'compass', 'karma']);
 
   /**
    * A task to build the project, without some of the slower processes. This is

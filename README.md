@@ -13,9 +13,10 @@ and was customized for [Neoksop GmbH](http://neoskop.de/).
 Following global Tools are needed, if you do not have them already:
 
 ```sh
-$ npm install -g grunt-cli
-$ npm install -g karma
-$ npm install -g bower
+$ npm install -g grunt-cli # Grunt Task Manager
+$ npm install -g karma     # Test Runner
+$ npm install -g bower     # Package Manager
+$ gem update --system && gem install compass # Compass Framework for SASS
 ```
 
 Clone the repository and install all dependencies:
