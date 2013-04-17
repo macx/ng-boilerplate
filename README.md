@@ -1,4 +1,4 @@
-# [ngBoilerplate](http://joshdmiller.github.com/ng-boilerplate) [![Build Status](https://travis-ci.org/neoskop/ng-boilerplate.png?branch=master)](https://travis-ci.org/neoskop/ng-boilerplate)
+# ngBoilerplate [![Build Status](https://travis-ci.org/neoskop/ng-boilerplate.png?branch=master)](https://travis-ci.org/neoskop/ng-boilerplate) [![Dependency Status](https://gemnasium.com/neoskop/ng-boilerplate.png)](https://gemnasium.com/neoskop/ng-boilerplate)
 
 An opinionated kickstarter for [AngularJS](http://angularjs.org) projects.
 
