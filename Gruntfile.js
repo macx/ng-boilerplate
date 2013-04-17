@@ -148,19 +148,8 @@ module.exports = function (grunt) {
     },
 
     /**
-     * Use SCSS as Preprocessor for our CSS files
+     * use grunt-compass for sass with compass compiling
      */
-    sass: {
-      build: {
-        src: [],
-        dest: '<%= distdir %>/assets/<%= pkg.name %>.css',
-        options: {
-          style: 'expanded',
-          debugInfo: true
-        }
-      }
-    },
-
     compass: {
       dist: {
         options: {
