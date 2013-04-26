@@ -130,7 +130,7 @@ module.exports = function (grunt) {
         store: 'vendor',
         dest: '<%= distdir %>/assets',
         destfile: 'libs', // depends on components libs.css/libs.js
-        packages: grunt.file.readJSON('component.json').dependencies
+        packages: grunt.file.readJSON('bower.json').dependencies
       }
     },
     /**
