@@ -27,7 +27,7 @@
     "grunt-contrib-uglify": "~0.2.x",
     "grunt-karma": "~0.4.x",
     "grunt-html2js": "~0.1.x",
-    "grunt-bowerful": "~0.2.x",
+    "grunt-bowerful": "https://github.com/gyllstromk/grunt-bowerful/tarball/develop",
     "grunt-contrib-compass": "~0.2.x"
   }
 }
