@@ -28,6 +28,7 @@
     "grunt-karma": "~0.4.x",
     "grunt-html2js": "~0.1.x",
     "grunt-bowerful": "https://github.com/gyllstromk/grunt-bowerful/tarball/develop",
-    "grunt-contrib-compass": "~0.2.x"
+    "grunt-contrib-compass": "~0.2.x",
+    "grunt-conventional-changelog": "0.0.12"
   }
 }

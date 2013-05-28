@@ -15,6 +15,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-html2js');
   grunt.loadNpmTasks('grunt-bowerful');
+  grunt.loadNpmTasks('grunt-conventional-changelog');
 
   /**
    * The `build` directory contains our custom Grunt tasks for using testacular
@@ -214,6 +215,16 @@ module.exports = function (grunt) {
     },
 
     /**
+     * Conventional Changelog Taks,
+     * generating a changelog based on angularjs' commit convention
+     */
+    changelog: {
+      options: {
+        dest: 'CHANGELOG.md'
+      }
+    },
+
+    /**
      * The Karma configurations.
      */
     karma: {
@@ -330,6 +341,8 @@ module.exports = function (grunt) {
    * used during development and testing and is part of the `watch`.
    */
   grunt.registerTask('quick-build', ['clean', 'html2js', 'jshint', 'concat', 'bowerful', 'index', 'copy']);
+
+  grunt.registerTask('release', ['changelog']);
 
   /**
    * The index.html template includes the stylesheet and javascript sources
