@@ -16,6 +16,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-html2js');
   grunt.loadNpmTasks('grunt-bowerful');
   grunt.loadNpmTasks('grunt-conventional-changelog');
+  grunt.loadNpmTasks('grunt-ngmin');
 
   /**
    * The `build` directory contains our custom Grunt tasks for using testacular
@@ -134,6 +135,17 @@ module.exports = function (grunt) {
         packages: grunt.file.readJSON('bower.json').dependencies
       }
     },
+
+    /**
+     * Use ng-min to annotate the sources before minifying
+     */
+    ngmin: {
+      dist: {
+        src: [ '<%= distdir %>/assets/<%= pkg.name %>.js' ],
+        dest: '<%= distdir %>/assets/<%= pkg.name %>.annotated.js'
+      }
+    },
+
     /**
      * Minify the sources!
      */
@@ -143,7 +155,7 @@ module.exports = function (grunt) {
       },
       dist: {
         files: {
-          '<%= distdir %>/assets/<%= pkg.name %>.min.js': ['<%= distdir %>/assets/<%= pkg.name %>.js']
+          '<%= distdir %>/assets/<%= pkg.name %>.min.js': ['<%= distdir %>/assets/<%= pkg.name %>.annotated.js']
         }
       }
     },
@@ -340,7 +352,7 @@ module.exports = function (grunt) {
    * A task to build the project, without some of the slower processes. This is
    * used during development and testing and is part of the `watch`.
    */
-  grunt.registerTask('quick-build', ['clean', 'html2js', 'jshint', 'concat', 'bowerful', 'index', 'copy']);
+  grunt.registerTask('quick-build', ['clean', 'html2js', 'jshint', 'concat', 'bowerful', 'ngmin:dist', 'uglify', 'index', 'copy']);
 
   grunt.registerTask('release', ['changelog']);
 

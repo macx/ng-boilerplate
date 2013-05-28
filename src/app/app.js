@@ -10,11 +10,11 @@ angular.module('ngBoilerplate', [
   $routeProvider.otherwise({ redirectTo: '/home' });
 })
 
-.run([ 'titleService', function(titleService) {
+.run(function(titleService) {
   titleService.setSuffix(' | ngBoilerplate');
-}])
+})
 
-.controller('AppCtrl', ['$scope', function($scope) {
+.controller('AppCtrl', function($scope) {
   $scope.features = [
     'Angular',
     'Grunt',
@@ -22,5 +22,5 @@ angular.module('ngBoilerplate', [
     'TDD, because it is the only way.',
     'Full Bower Integration'
   ];
-}]);
+});
 

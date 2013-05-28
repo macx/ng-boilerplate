@@ -1,5 +1,74 @@
 # 0.1.0 (2013-05-28)
 
+## Features
+### *
+
+* Initial application structure (7c14922)
+
+* improved navigation styling and added home page tpl (e1a655e)
+
+### app
+
+* added current route indication to menu with appropriate unit test (14d35da)
+
+### index
+
+* improved navbar style and added additional links (a7c4504)
+
+### about
+
+* Added an about page with some descriptive content (290704a)
+
+* Added placeholders demo to about page (89a06e9)
+
+### titleService
+
+* dynamic title support) (3db6ec2)
+
+* suffix is now customizable (9f8b4c7)
+
+### activeIfCurrentDirective
+
+* created directory to test for current route (0ac1f4b)
+
+### home
+
+* replaced placeholder text with mrktg copy (dcaf723)
+
+* added google +1 button (98d3312)
+
+### gruntfile
+
+* add changelog task (d30dbca)
+
+
+
+## Bug fixes
+### build
+
+* Removed unnecessary step from delta:unittest (5ffbfd7)
+
+* delta tasks that concat must also uglify (926983f)
+
+### test-config
+
+* Change browser-name case, add browser list (682b1ea)
+
+### home
+
+* corrected typo in tweet button URL (b9920ee)
+
+### testacular
+
+* fixed typo in browser docstring (11a60fa)
+
+### gemfile
+
+* change to https (3933cea)
+
+
+# 0.1.0 (2013-05-28)
+
 
 
 ## Bug fixes

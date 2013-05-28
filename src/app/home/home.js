@@ -4,14 +4,14 @@ angular.module('ngBoilerplate.home', [
   'titleService'
 ])
 
-.config(['$routeProvider', function($routeProvider) {
+.config(function($routeProvider) {
   $routeProvider.when('/home', {
     controller: 'HomeCtrl',
     templateUrl: 'app/home/home.tpl.html'
   });
-}])
+})
 
 
-.controller('HomeCtrl', ['$scope', 'titleService', function($scope, titleService) {
+.controller('HomeCtrl', function($scope, titleService) {
   titleService.setTitle('Home');
-}]);
+});
