@@ -13,21 +13,9 @@ var mountFolder = function (connect, dir) {
 module.exports = function (grunt) {
   /**
    * Load required Grunt tasks. These are installed based on the versions listed
-   * in `package.json` when you do `npm install` in this directory.
+   * in `package.json` when you do `npm install --save-dev` in this directory.
    */
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-compass');
-  grunt.loadNpmTasks('grunt-karma');
-  grunt.loadNpmTasks('grunt-html2js');
-  grunt.loadNpmTasks('grunt-bowerful');
-  grunt.loadNpmTasks('grunt-conventional-changelog');
-  grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-ngmin');
+  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
   /**
    * The `build` directory contains our custom Grunt tasks for using testacular
