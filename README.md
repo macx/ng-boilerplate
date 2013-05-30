@@ -32,7 +32,7 @@ For develop within this project you need [Grunt](http://gruntjs.com), the follow
 
 ```sh
 $ grunt       # actually this builds the project
-$ grunt watch # this task waits for file changes and rebuilds the project
+$ grunt watch # starts a server (http://localhost:9000), will wait on changes and reloads the browser
 ```
 
 ### Testing (Unit, E2E, Midway)

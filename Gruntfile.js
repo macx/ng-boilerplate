@@ -1,5 +1,15 @@
 'use strict';
 
+/**
+ * Setting livereload port, lrSnippet and a mount function for later
+ * connect-livereload integration.
+ */
+var LIVERELOAD_PORT = 35729;
+var lrSnippet = require('connect-livereload')({port: LIVERELOAD_PORT});
+var mountFolder = function (connect, dir) {
+  return connect.static(require('path').resolve(dir));
+};
+
 module.exports = function (grunt) {
   /**
    * Load required Grunt tasks. These are installed based on the versions listed
@@ -16,6 +26,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-html2js');
   grunt.loadNpmTasks('grunt-bowerful');
   grunt.loadNpmTasks('grunt-conventional-changelog');
+  grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-ngmin');
 
   /**
@@ -200,6 +211,25 @@ module.exports = function (grunt) {
     },
 
     /**
+     * connect-server instance, by default lisiting to port 9000
+     */
+    connect: {
+      options: {
+        port: 9000,
+        // change this to '0.0.0.0' to access the server from outside
+        hostname: 'localhost'
+      },
+      livereload: {
+        options: {
+          middleware: function (connect) {
+            return [
+              lrSnippet, mountFolder(connect, 'dist')
+            ];
+          }
+        }
+      }
+    },
+    /**
      * HTML2JS is a Grunt plugin originally written by the AngularUI Booststrap
      * team and updated to Grunt 0.4 by me. It takes all of your template files
      * and places them into JavaScript files as strings that are added to
@@ -257,6 +287,16 @@ module.exports = function (grunt) {
      * But we don't need the same thing to happen for all the files.
      */
     delta: {
+
+      /**
+       * By default, each delta task is using live reload, if you want to disable it,
+       * just add within the taks `options:livereload:false`
+       * default port for live reload: 35729
+       */
+      options: {
+        livereload: true
+      },
+
       /**
        * When the Gruntfile changes, we just want to lint it. That said, the
        * watch will have to be restarted if it should take advantage of any of
@@ -340,7 +380,7 @@ module.exports = function (grunt) {
    * before watching for changes.
    */
   grunt.renameTask('watch', 'delta');
-  grunt.registerTask('watch', ['default', 'delta']);
+  grunt.registerTask('watch', ['default', 'connect:livereload', 'delta']);
 
   /**
    * The default task is to build.
