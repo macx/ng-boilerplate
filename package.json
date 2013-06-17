@@ -18,7 +18,7 @@
   "dependencies": {},
   "devDependencies": {
     "karma": "~0.8.x",
-    "grunt": "~0.4.1",
+    "grunt": "~0.4.x",
     "grunt-contrib-clean": "~0.4.x",
     "grunt-contrib-copy": "~0.4.x",
     "grunt-contrib-jshint": "~0.4.x",
