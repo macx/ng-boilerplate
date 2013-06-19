@@ -2,9 +2,10 @@
 *.sw*
 *~
 .sass-cache
-dist/
+build
+bin
 node_modules/
 vendor/
-!vendor/README.md
 Gemfile.lock
 *.log
+vendor/
