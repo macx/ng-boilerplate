@@ -117,4 +117,3 @@ angular.module('titleService', [])
 
   return titleService;
 });
-

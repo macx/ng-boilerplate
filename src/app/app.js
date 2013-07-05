@@ -2,19 +2,20 @@
 
 angular.module('ngBoilerplate', [
   'templates-app',
-  'templates-component',
-  'ngBoilerplate.home'
+  'templates-common',
+  'ngBoilerplate.home',
+  'ui.state'
 ])
 
-.config(function($routeProvider) {
-  $routeProvider.otherwise({ redirectTo: '/home' });
+.config(function myAppConfig ($stateProvider, $urlRouterProvider) {
+  $urlRouterProvider.otherwise( '/home' );
 })
 
-.run(function(titleService) {
+.run(function run(titleService) {
   titleService.setSuffix(' | ngBoilerplate');
 })
 
-.controller('AppCtrl', function($scope) {
+.controller('AppCtrl', function ($scope) {
   $scope.features = [
     'Angular',
     'Grunt',

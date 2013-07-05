@@ -1,6 +1,6 @@
-# The `src/components/` Directory
+# The `src/common/` Directory
 
-The `src/components/` directory houses internal and third-party re-usable
+The `src/common/` directory houses internal and third-party re-usable
 components. Essentially, this folder is for everything that isn't completely
 specific to this application.
 
@@ -10,7 +10,7 @@ the developer desires. The build system will read all `*.js` files and all
 
 ```
 src/
-  |- components/
+  |- common/
   |  |- titleService/
 ```
 

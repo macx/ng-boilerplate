@@ -42,7 +42,6 @@
 * add changelog task (d30dbca)
 
 
-
 ## Bug fixes
 ### build
 
@@ -87,7 +86,6 @@
 ### gemfile
 
 * change to https ([3933ceab](git@github.com:neoskop/ng-boilerplate/commits/3933ceab))
-
 
 
 
