@@ -814,7 +814,7 @@ module.exports = function (grunt) {
     }
   };
 
-  grunt.initConfig(grunt.util._.extend(taskConfig, userConfig));
+  grunt.initConfig(grunt.util._.merge(taskConfig, userConfig));
 
   /**
    * In order to make it safe to just compile or copy *only* what was changed,
