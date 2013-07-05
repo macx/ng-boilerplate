@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
 
   customTask: {
@@ -5,8 +7,8 @@ module.exports = {
     description: 'this is a custom task to show, how to write your own',
     definition: function (grunt) {
       return function () {
-        console.log('this is a custom task! :)');
-      }
+        console.dir(grunt);
+      };
     }
   }
 };

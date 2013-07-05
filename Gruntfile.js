@@ -360,6 +360,18 @@ module.exports = function (grunt) {
         files: {
           src: ['Gruntfile.js']
         }
+      },
+
+      buildconf: {
+        files: {
+          src: ['build.conf.js']
+        }
+      },
+
+      buildtasks: {
+        files: {
+          src: ['build.tasks.js']
+        }
       }
     },
 
@@ -600,6 +612,28 @@ module.exports = function (grunt) {
       gruntfile: {
         files: 'Gruntfile.js',
         tasks: ['jshint:gruntfile'],
+        options: {
+          livereload: false
+        }
+      },
+
+      /**
+       * When the build.conf.js changes, we just want to lint it. In fact, when
+       */
+      buildconf: {
+        files: 'build.config.js',
+        tasks: ['jshint:buildconf'],
+        options: {
+          livereload: false
+        }
+      },
+
+      /**
+       * When the build.task.conf changes, we just want to lint it. In fact, when
+       */
+      buildtasks: {
+        files: 'build.tasks.js',
+        tasks: ['jshint:buildtasks'],
         options: {
           livereload: false
         }
