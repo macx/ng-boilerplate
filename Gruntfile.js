@@ -364,7 +364,7 @@ module.exports = function (grunt) {
 
       buildconf: {
         files: {
-          src: ['build.conf.js']
+          src: ['build.config.js']
         }
       },
 

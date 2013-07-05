@@ -1,3 +1,6 @@
+'use strict';
+/* jshint camelcase: false */
+
 /**
  * This file/module contains all configuration for the build process.
  */
