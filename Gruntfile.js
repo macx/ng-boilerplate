@@ -791,9 +791,7 @@ module.exports = function (grunt) {
         'jshint',
         'coffeelint',
         'coffee',
-        'karmaconfig',
-        'karma:continuous_unit',
-        'karma:continuous_midway'
+        'karmaconfig'
       ]
     },
 

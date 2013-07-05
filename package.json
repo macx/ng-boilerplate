@@ -13,7 +13,7 @@
     "url": "git@github.com:neoskop/ng-boilerplate.git"
   },
   "scripts": {
-    "test": "./node_modules/karma/bin/karma start --browsers Firefox --single-run"
+    "test": "./node_modules/karma/bin/karma start build/karma.unit.conf.js --browsers Firefox --single-run"
   },
   "engines": {
     "node": ">=0.10.x",
