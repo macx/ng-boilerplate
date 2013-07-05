@@ -540,9 +540,8 @@ module.exports = function (grunt) {
         destFile: 'karma.unit.conf.js',
         tplFile: 'karma/karma.unit.tpl.js',
         src: [
-          'vendor/angular/angular.js',
+          '<%= vendor_files.js %>',
           'vendor/angular-mocks/angular-mocks.js',
-          'vendor/angular-ui-router/release/angular-ui-router.js',
           '<%= html2js.app.dest %>',
           '<%= html2js.common.dest %>',
         ]
@@ -553,8 +552,7 @@ module.exports = function (grunt) {
         destFile: 'karma.midway.conf.js',
         tplFile: 'karma/karma.midway.tpl.js',
         src: [
-          'vendor/angular/angular.js',
-          'vendor/angular-ui-router/release/angular-ui-router.js',
+          '<%= vendor_files.js %>',
           'vendor/ngMidwayTester/Source/ngMidwayTester.js',
           '<%= html2js.app.dest %>',
           '<%= html2js.common.dest %>'
@@ -566,8 +564,7 @@ module.exports = function (grunt) {
         destFile: 'karma.e2e.conf.js',
         tplFile: 'karma/karma.e2e.tpl.js',
         src: [
-          'vendor/angular/angular.js',
-          'vendor/angular-ui-router/release/angular-ui-router.js',
+          '<%= vendor_files.js %>',
           '<%= html2js.app.dest %>',
           '<%= html2js.common.dest %>',
         ]
