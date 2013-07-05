@@ -1,4 +1,6 @@
 'use strict';
+/* jslint camelcase: false */
+
 
 /**
  * Setting livereload port, lrSnippet and a mount function for later
@@ -18,30 +20,20 @@ module.exports = function (grunt) {
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
   /**
-   * The `build` directory contains our custom Grunt tasks for using testacular
-   * and compiling our templates into the cache. If we just tell Grunt about the
-   * directory, it will load all the requisite JavaSript files for us.
+   * Load in our build configuration file.
    */
+  var userConfig = require('./build.config.js');
+
+  /**
+   * Load user custom grunt task definitions
+   */
+  var userTasks = require('./build.tasks.js');
 
   /**
    * This is the configuration object Grunt uses to give each plugin its
    * instructions.
    */
-  grunt.initConfig({
-    /**
-     * The `build_dir` folder is where our projects are compiled during
-     * development and the `compile_dir` folder is where our app resides once it's
-     * completely built.
-     *
-     * In addition to that, we have a `sass_dir` where all our sass files waiting
-     * for their pre-compilation. We also pulled out all test file from `src` and
-     * put'em in their own directory `test`.
-     */
-    build_dir: 'build',
-    compile_dir: 'bin',
-    sass_dir: 'src/scss',
-    test_dir: 'test'
-
+  var taskConfig = {
     /**
      * We read in our `package.json` file so we can access the package name and
      * version. It's already there, so we don't repeat ourselves here.
@@ -65,54 +57,42 @@ module.exports = function (grunt) {
     },
 
     /**
-     * This is a collection of file patterns that refer to our app code (the
-     * stuff in `src/`). These file paths are used in the configuration of
-     * build tasks. `js` is all project javascript, less tests. `ctpl` contains
-     * our reusable components' (`src/common`) template HTML files, while
-     * `atpl` contains the same, but for our app's code. `html` is just our
-     * main HTML file, `scss` is our main stylesheet, and `unit`, `midway` as
-     * well as `e2e` contains our app's unit tests.
+     * Creates a changelog on a new version.
      */
-    app_files: {
-      js: ['src/**/*.js', '!src/**/*.spec.js'],
-      atpl: ['src/app/**/*.tpl.html'],
-      ctpl: ['src/common/**/*.tpl.html'],
-      html: ['src/index.html'],
-      scss: ['<%= sass_dir %>/**/*.scss'],
-      unit: ['<%= test_dir %>/unit/**/*.spec.js'],
-      midway: ['<%= test_dir %>/midway/**/*.spec.js'],
-      e2e: ['<%= test_dir %>/e2e/**/*.spec.js']
+    changelog: {
+      options: {
+        dest: 'CHANGELOG.md',
+        template: 'changelog.tpl'
+      }
     },
 
     /**
-     * This is the same as `app_files`, except it contains patterns that
-     * reference vendor code (`vendor/`) that we need to place into the build
-     * process somewhere. While the `app_files` property ensures all
-     * standardized files are collected for compilation, it is the user's job
-     * to ensure non-standardized (i.e. vendor-related) files are handled
-     * appropriately in `vendor_files.js`.
-     *
-     * The `vendor_files.js` property holds files to be automatically
-     * concatenated and minified with our project source files.
-     *
-     * The `vendor_files.css` property holds any CSS files to be automatically
-     * included in our app.
+     * Increments the version number, etc.
      */
-    vendor_files: {
-      js: [
-        'vendor/angular/angular.js'
-      ],
-      css: [
-      ]
+    bump: {
+      options: {
+        files: [
+          'package.json',
+          'bower.json'
+        ],
+        commit: false,
+        commitMessage: 'chore(release): v%VERSION%',
+        commitFiles: [
+          'package.json',
+          'client/bower.json'
+        ],
+        createTag: false,
+        tagName: 'v%VERSION%',
+        tagMessage: 'Version %VERSION%',
+        push: false,
+        pushTo: 'origin'
+      }
     },
 
     /**
      * The directories to delete when `grunt clean` is executed.
      */
-    clean: [
-      '<%= build_dir %>',
-      '<%= compile_dir %>'
-    ],
+    clean: ['<%= build_dir %>', '<%= compile_dir %>'],
 
     /**
      * The `copy` task just copies files from A to B. We use it here to copy
@@ -120,6 +100,7 @@ module.exports = function (grunt) {
      * `build_dir`, and then to copy the assets to `compile_dir`.
      */
     copy: {
+
       build_assets: {
         files: [
           {
@@ -128,8 +109,9 @@ module.exports = function (grunt) {
             cwd: 'src/assets',
             expand: true
           }
-       ]
+        ]
       },
+
       build_appjs: {
         files: [
           {
@@ -140,6 +122,7 @@ module.exports = function (grunt) {
           }
         ]
       },
+
       build_vendorjs: {
         files: [
           {
@@ -150,6 +133,18 @@ module.exports = function (grunt) {
           }
         ]
       },
+
+      build_vendorcss: {
+        files: [
+          {
+            src: ['<%= vendor_files.css %>'],
+            dest: '<%= build_dir %>/',
+            cwd: '.',
+            expand: true
+          }
+        ]
+      },
+
       compile_assets: {
         files: [
           {
@@ -190,10 +185,29 @@ module.exports = function (grunt) {
           '<%= build_dir %>/src/**/*.js',
           '<%= html2js.app.dest %>',
           '<%= html2js.common.dest %>',
-          '<%= vendor_files.js %>',
           'module.suffix'
         ],
-        dest: '<%= compile_dir %>/<%= pkg.name %>.js'
+        dest: '<%= compile_dir %>/assets/js/<%= pkg.name %>.js'
+      }
+    },
+
+    /**
+     * `grunt coffee` compiles the CoffeeScript sources. To work well with the
+     * rest of the build, we have a separate compilation task for sources and
+     * specs so they can go to different places. For example, we need the
+     * sources to live with the rest of the copied JavaScript so we can include
+     * it in the final build, but we don't want to include our specs there.
+     */
+    coffee: {
+      source: {
+        options: {
+          bare: true
+        },
+        expand: true,
+        cwd: '.',
+        src: [ '<%= app_files.coffee %>' ],
+        dest: '<%= build_dir %>',
+        ext: '.js'
       }
     },
 
@@ -280,41 +294,72 @@ module.exports = function (grunt) {
     },
 
     /**
-     * use grunt-compass for sass with compass compiling
+     * use grunt-contrib-compass for sass with compass compiling
      */
     compass: {
-      compile: {
+      build: {
         options: {
           sassDir: '<%= sass_dir %>',
-          cssDir: '<%= build_dir %>/assets/',
+          cssDir: '<%= build_dir %>/assets/css',
           debugInfo: true
         }
       }
     },
 
     /**
+     * Exlicitly minify css code, since grunt-contrib-compass does not come with
+     * built-in minification support. This task will be executed **after** scss
+     * files have been compiled.
+     */
+    cssmin: {
+      compile: {
+        options: {
+          banner: '<%= meta.banner %>',
+          report: 'gzip'
+        },
+        files: {
+          '<%= compass.build.options.cssDir %>/main.css': [
+            '<%= build_dir %>/vendor/**/*.css',
+            '<%= compass.build.options.cssDir %>/main.css'
+          ]
+        }
+      }
+    },
+
+    /**
      * `jshint` defines the rules of our linter as well as which files we
-     * should check. This file, all javascript sources, and all our unit tests
+     * should check. This file, all javascript sources, and all our tests
      * are linted based on the policies listed in `options`. But we can also
      * specify exclusionary patterns by prefixing them with an exclamation
      * point (!); this is useful when code comes from a third party but is
      * nonetheless inside `src/`.
      */
     jshint: {
-      src: [
-        '<%= app_files.js %>'
-      ],
-      test: [
-        '<%= app_files.unit %>',
-        '<%= app_files.midway %>',
-        '<%= app_files.e2e %>'
-      ],
-      gruntfile: [
-        'Gruntfile.js'
-      ],
+
       options: {
-        // we are using the .jshintrc file!
         jshintrc: '.jshintrc',
+      },
+
+      src: {
+        files: {
+          src: ['<%= app_files.js %>']
+        }
+      },
+
+      test: {
+        files: {
+          src: [
+            '<%= app_files.jsunit %>',
+            '<%= app_files.jsmidway %>',
+            '<%= app_files.jse2e %>'
+          ]
+        }
+      },
+
+      gruntfile: {
+        files: {
+          src: ['Gruntfile.js']
+        }
       }
     },
 
@@ -322,28 +367,55 @@ module.exports = function (grunt) {
      * connect-server instance, by default lisiting to port 9000
      */
     connect: {
-      options: {
-        port: 9000,
-        // change this to '0.0.0.0' to access the server from outside
-        hostname: 'localhost'
+      /**
+       * Testserver instance for e2e tests. This is a work in progress since
+       * we're still having problems with the e2e test environment.
+       */
+      testserver: {
+        options: {
+          base: '<%= build_dir %>'
+        }
       },
+
       livereload: {
         options: {
+          port: 9000,
+          // change this to '0.0.0.0' to access the server from outside
+          hostname: 'localhost',
           middleware: function (connect) {
-            return [
-              lrSnippet, mountFolder(connect, '<%= build_dir %>')
-            ];
+            return [lrSnippet, mountFolder(connect, 'build')];
           }
         }
       }
     },
 
     /**
-     * HTML2JS is a Grunt plugin originally written by the AngularUI Booststrap
-     * team and updated to Grunt 0.4 by me. It takes all of your template files
-     * and places them into JavaScript files as strings that are added to
-     * AngularJS's template cache. This means that the templates too become part
-     * of the initial payload as one JavaScript file. Neat!
+     * `coffeelint` does the same as `jshint`, but for CoffeeScript.
+     * CoffeeScript is not the default in ngBoilerplate, so we're just using
+     * the defaults here.
+     */
+    coffeelint: {
+      src: {
+        files: {
+          src: [ '<%= app_files.coffee %>' ]
+        }
+      },
+      test: {
+        files: {
+          src: [
+            '<%= app_files.coffeeunit %>',
+            '<%= app_files.coffeemidway %>',
+            '<%= app_files.coffeee2e %>'
+          ]
+        }
+      }
+    },
+
+    /**
+     * HTML2JS is a Grunt plugin that takes all of your template files and
+     * places them into JavaScript files as strings that are added to
+     * AngularJS's template cache. This means that the templates too become
+     * part of the initial payload as one JavaScript file. Neat!
      */
     html2js: {
       /**
@@ -358,7 +430,7 @@ module.exports = function (grunt) {
       },
 
       /**
-       * These are the templates from `src/components`.
+       * These are the templates from `src/common`.
        */
       common: {
         options: {
@@ -370,24 +442,51 @@ module.exports = function (grunt) {
     },
 
     /**
-     * Conventional Changelog Taks,
-     * generating a changelog based on angularjs' commit convention
-     */
-    changelog: {
-      options: {
-        dest: 'CHANGELOG.md'
-      }
-    },
-
-    /**
      * The Karma configurations.
      */
     karma: {
       unit: {
-        configFile: 'karma.conf.js',
-        singleRun: true,
-        runnerPort: 9101,
+        options: {
+          configFile: '<%= build_dir %>/karma.unit.conf.js'
+        },
+        runnerPort: 9102,
         background: true
+      },
+
+      midway: {
+        options: {
+          configFile: '<%= build_dir %>/karma.midway.conf.js'
+        },
+        runnerPort: 9103,
+        background: true
+      },
+
+      e2e: {
+        options: {
+          configFile: '<%= build_dir %>/karma.e2e.conf.js'
+        },
+        background: true
+      },
+
+      continuous_unit: {
+        options: {
+          configFile: '<%= build_dir %>/karma.unit.conf.js'
+        },
+        singleRun: true
+      },
+
+      continuous_midway: {
+        options: {
+          configFile: '<%= build_dir %>/karma.midway.conf.js'
+        },
+        singleRun: true
+      },
+
+      continuous_e2e: {
+        options: {
+          configFile: '<%= build_dir %>/karma.e2e.conf.js'
+        },
+        singleRun: true
       }
     },
 
@@ -407,10 +506,11 @@ module.exports = function (grunt) {
         dir: '<%= build_dir %>',
         src: [
           '<%= vendor_files.js %>',
-          '<%= app_files.js %>',
+          '<%= build_dir %>/src/**/*.js',
           '<%= html2js.common.dest %>',
           '<%= html2js.app.dest %>',
           '<%= vendor_files.css %>',
+          '<%= compass.build.options.cssDir %>/**/*.css'
         ]
       },
 
@@ -424,6 +524,52 @@ module.exports = function (grunt) {
         src: [
           '<%= concat.compile_js.dest %>',
           '<%= vendor_files.css %>',
+          '<%= compile_dir %>/assets/css/<%= pkg.name %>.css'
+        ]
+      }
+    },
+
+    /**
+     * This task compiles the karma template so that changes to its file array
+     * don't have to be managed manually.
+     */
+    karmaconfig: {
+
+      unit: {
+        dir: '<%= build_dir %>',
+        destFile: 'karma.unit.conf.js',
+        tplFile: 'karma/karma.unit.tpl.js',
+        src: [
+          'vendor/angular/angular.js',
+          'vendor/angular-mocks/angular-mocks.js',
+          'vendor/angular-ui-router/release/angular-ui-router.js',
+          '<%= html2js.app.dest %>',
+          '<%= html2js.common.dest %>',
+        ]
+      },
+
+      midway: {
+        dir: '<%= build_dir %>',
+        destFile: 'karma.midway.conf.js',
+        tplFile: 'karma/karma.midway.tpl.js',
+        src: [
+          'vendor/angular/angular.js',
+          'vendor/angular-ui-router/release/angular-ui-router.js',
+          'vendor/ngMidwayTester/Source/ngMidwayTester.js',
+          '<%= html2js.app.dest %>',
+          '<%= html2js.common.dest %>'
+        ]
+      },
+
+      e2e: {
+        dir: '<%= build_dir %>',
+        destFile: 'karma.e2e.conf.js',
+        tplFile: 'karma/karma.e2e.tpl.js',
+        src: [
+          'vendor/angular/angular.js',
+          'vendor/angular-ui-router/release/angular-ui-router.js',
+          '<%= html2js.app.dest %>',
+          '<%= html2js.common.dest %>',
         ]
       }
     },
@@ -456,18 +602,32 @@ module.exports = function (grunt) {
        */
       gruntfile: {
         files: 'Gruntfile.js',
-        tasks: ['jshint:gruntfile']
+        tasks: ['jshint:gruntfile'],
+        options: {
+          livereload: false
+        }
       },
 
       /**
        * When our source files change, we want to lint them and run our
        * unit tests.
        */
-      src: {
+      jssrc: {
         files: [
           '<%= app_files.js %>'
         ],
-        tasks: [ 'jshint:src', 'karma:unit:run', 'copy:build_appjs' ]
+        tasks: ['jshint:src', 'karma:unit:run', 'karma:midway:run', 'copy:build_appjs']
+      },
+
+      /**
+       * When our CoffeeScript source files change, we want to run lint them and
+       * run our unit tests.
+       */
+      coffeesrc: {
+        files: [
+          '<%= app_files.coffee %>'
+        ],
+        tasks: [ 'coffeelint:src', 'coffee:source', 'karma:unit:run', 'karma:midway:run', 'copy:build_appjs' ]
       },
 
       /**
@@ -511,20 +671,155 @@ module.exports = function (grunt) {
       },
 
       /**
-       * When a unit test file changes, we only want to linit it and run the
-       * unit tests. However, since the `app` module requires the compiled
-       * templates, we must also run the `html2js` task.
+       * When a JavaScript test file changes, we only want to lint it and
+       * run the tests. We don't want to do any live reloading.
        */
-      karma: {
+      jsunit: {
         files: [
-          '<%= app_files.unit %>',
-          '<%= app_files.midway %>',
-          '<%= app_files.e2e %>'
+          '<%= app_files.jsunit %>'
         ],
-        tasks: ['jshint:karma']
+        tasks: [ 'jshint:test', 'karma:unit:run' ],
+        options: {
+          livereload: false
+        }
+      },
+
+      jsmidway: {
+        files: [
+          '<%= app_files.jsmidway %>'
+        ],
+        tasks: [ 'jshint:test', 'karma:midway:run' ],
+        options: {
+          livereload: false
+        }
+      },
+
+      jse2e: {
+        files: [
+          '<%= app_files.jse2e %>'
+        ],
+        tasks: [ 'jshint:test', 'karma:e2e:run' ],
+        options: {
+          livereload: false
+        }
+      },
+
+      /**
+       * When a CoffeeScript test file changes, we only want to lint it and
+       * run the unit tests. We don't want to do any live reloading.
+       */
+      coffeeunit: {
+        files: [
+          '<%= app_files.coffeeunit %>'
+        ],
+        tasks: [ 'coffeelint:test', 'karma:unit:run' ],
+        options: {
+          livereload: false
+        }
+      },
+
+      coffeemidway: {
+        files: [
+          '<%= app_files.coffeemidway %>'
+        ],
+        tasks: [ 'coffeelint:test', 'karma:midway:run' ],
+        options: {
+          livereload: false
+        }
+      },
+
+      coffeee2e: {
+        files: [
+          '<%= app_files.coffeee2e %>'
+        ],
+        tasks: [ 'coffeelint:test', 'karma:e2e:run' ],
+        options: {
+          livereload: false
+        }
       }
     }
-  });
+  };
+
+  var defaultTasks = {
+    watch: {
+      name: 'watch',
+      description: '',
+      definition: ['build', 'karma:unit', 'karma:midway', 'connect:livereload', 'delta']
+    },
+
+    /**
+    * The default task is to build and compile.
+    */
+    defaultTask: {
+      name: 'default',
+      definition: ['build', 'compile']
+    },
+
+    /**
+    * The `build` task gets your app ready to run for development and testing.
+    */
+    build: {
+      name: 'build',
+      definition: [
+        'clean',
+        'html2js',
+        'jshint',
+        'coffeelint',
+        'coffee',
+        'compass:build',
+        'copy:build_assets',
+        'copy:build_appjs',
+        'copy:build_vendorjs',
+        'copy:build_vendorcss',
+        'index:build',
+        'karmaconfig',
+        'karma:continuous_unit',
+        'karma:continuous_midway'
+    //'connect:testserver', 'karma:continuous_e2e'
+      ]
+    },
+
+    /**
+     * quick-build task which gets executed by travis. We have to decouple this one
+     * from build task, because travis ci can't handle compass/sass etc.
+     */
+    quickBuild: {
+      name: 'quick-build',
+      definition: [
+        'clean',
+        'html2js',
+        'jshint',
+        'coffeelint',
+        'coffee',
+        'karmaconfig',
+        'karma:continuous_unit',
+        'karma:continuous_midway'
+      ]
+    },
+
+    /**
+    * The `compile` task gets your app ready for deployment by concatenating and
+    * minifying your code.
+    */
+    compile: {
+      name: 'compile',
+      definition: [
+        'cssmin:compile',
+        'copy:compile_assets',
+        'ngmin',
+        'concat:compile_js',
+        'uglify',
+        'index:compile'
+      ]
+    },
+
+    release: {
+      name: 'release',
+      taskDefinition: ['changelog']
+    }
+  };
+
+  grunt.initConfig(grunt.util._.extend(taskConfig, userConfig));
 
   /**
    * In order to make it safe to just compile or copy *only* what was changed,
@@ -534,31 +829,44 @@ module.exports = function (grunt) {
    * before watching for changes.
    */
   grunt.renameTask('watch', 'delta');
-  grunt.registerTask('watch', ['default', 'connect:livereload', 'delta']);
 
   /**
-   * The default task is to build and compile.
+   * Merging default tasks with user cusom tasks
    */
-  grunt.registerTask('default', ['build']);
-  grunt.registerTask('build', ['quick-build', 'compass']);
+  var tasks = grunt.util._.merge(defaultTasks, userTasks);
 
   /**
-   * The `build` task gets your app ready to run for development and testing.
+   * Register tasks by task definitions.
    */
-  grunt.registerTask('quick-build', [
-    'clean', 'html2js', 'jshint', 'karma:unit', 'copy:build_assets', 
-    'copy:build_appjs', 'copy:build_vendorjs', 'index:build'
-  ]);
+  grunt.util._.forEach(tasks, function (task) {
+
+    var taskDefinition = (typeof task.definition === 'function') ? task.definition(grunt) : task.definition;
+
+    if (task.description && task.description !== '') {
+      grunt.registerTask(task.name, task.description, taskDefinition);
+    } else {
+      grunt.registerTask(task.name, taskDefinition);
+    }
+  });
 
   /**
-   * The `compile` task gets your app ready for deployment by concatenating and
-   * minifying your code.
+   * A utility function to get all app JavaScript sources.
    */
-  grunt.registerTask( 'compile', [
-    'copy:compile_assets', 'ngmin', 'concat', 'uglify', 'index:compile'
-  ]);
+  function filterForJS (files) {
+    return files.filter(function (file) {
+      return file.match(/\.js$/);
+    });
+  }
 
-  grunt.registerTask('release', ['changelog']);
+  /**
+   * A utility function to get all app CSS sources.
+   */
+  function filterForCSS (files) {
+    return files.filter(function (file) {
+      return file.match(/\.css$/);
+    });
+  }
+
 
   /**
    * The index.html template includes the stylesheet and javascript sources
@@ -567,26 +875,40 @@ module.exports = function (grunt) {
    * compilation.
    */
   grunt.registerMultiTask('index', 'Process index.html template', function () {
-    var dirRE = new RegExp('^('+grunt.config('build_dir')+'|'+grunt.config('compile_dir')+')\/', 'g' );
-
-    var jsFiles = this.filesSrc.filter(function (file) {
-      return file.match( /\.js$/ );
-    }).map( function (file) {
-      return file.replace(dirRE,'');
+    var dirRE = new RegExp('^('+grunt.config('build_dir')+'|'+grunt.config('compile_dir')+')\/', 'g');
+    var jsFiles = filterForJS(this.filesSrc).map(function (file) {
+      return file.replace(dirRE, '');
     });
-
-    var cssFiles = this.filesSrc.filter(function (file) {
-      return file.match(/\.css$/);
-    }).map( function (file) {
-      return file.replace(dirRE,'');
+    var cssFiles = filterForCSS(this.filesSrc).map(function (file) {
+      return file.replace(dirRE, '');
     });
 
     grunt.file.copy('src/index.html', this.data.dir + '/index.html', {
-      process: function (contents, path) {
-        return grunt.template.process(contents, {
+      process: function (contents) {
+        return grunt.template.process( contents, {
           data: {
             scripts: jsFiles,
-            styles: cssFiles
+            styles: cssFiles,
+            version: grunt.config('pkg.version')
+          }
+        });
+      }
+    });
+  });
+
+  /**
+   * In order to avoid having to specify manually the files needed for karma to
+   * run, we use grunt to manage the list for us. The `karma/*` files are
+   * compiled as grunt templates for use by Karma. Yay!
+   */
+  grunt.registerMultiTask('karmaconfig', 'Process karma config templates', function () {
+    var jsFiles = filterForJS(this.filesSrc);
+
+    grunt.file.copy(this.data.tplFile, this.data.dir + '/' + this.data.destFile, {
+      process: function (contents) {
+        return grunt.template.process(contents, {
+          data: {
+            scripts: jsFiles
           }
         });
       }

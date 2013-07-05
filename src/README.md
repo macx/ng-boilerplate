@@ -13,12 +13,13 @@ src/
   |  |- app.js
   |  |- app.spec.js
   |- assets/
-  |- components/
+  |- common/
   |  |- titleService/
   |- scss/
   |  |- main.scss
   |  |- modules/
   |  |- partials/
+  |  |- fonts/
   |- index.html
 ```
 
@@ -26,7 +27,7 @@ src/
   another application. [Read more &raquo;](app/README.md)
 - `src/assets/` - static files like fonts and images. 
   [Read more &raquo;](assets/README.md)
-- `src/components/` - third-party libraries or components likely to be reused in
+- `src/common/` - third-party libraries or components likely to be reused in
   another application. [Read more &raquo;](components/README.md)
 - `src/scss/` - SASS/SCSS files. [Read more &raquo;](scss/README.md)
 - `src/index.html` - this is the HTML document of the single-page application.

@@ -3,17 +3,18 @@
   <head>
     <title>ng-boilerplate</title>
 
-    <!-- libs.css contains all bower css files -->
-    <link rel="stylesheet" type="text/css" href="assets/libs.css"/>
-
     <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
     <link rel="stylesheet" type="text/css" href="<%= file %>" /><% }); %>
 
-    <!-- compiled CSS --><% scripts.forEach( function ( file ) { %>
+    <!--[if IE 7>
+    <link rel="stylesheet" href="assets/font-awesome-ie7.min.css />
+    <![endif]-->
+
+    <!-- compiled JS --><% scripts.forEach( function ( file ) { %>
     <script type="text/javascript" src="<%= file %>"></script><% }); %>
 
   </head>
   <body>
-    <div ng-view ng-animate="animate"></div>
+    <div ui-view="main" ng-animate="animate"></div>
   </body>
 </html>

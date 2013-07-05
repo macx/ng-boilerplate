@@ -47,6 +47,56 @@ $ karma run   # if you want to run tests manually (without watch changes)
 
 ## ng-boilerplate in depth
 
+## Purpose
+
+`ngBoilerplate` is designed to make life easy by providing a basic framework
+with which to kickstart AngularJS projects. It contains a best-practice
+directory structure to ensure code reusability and maximum scalability.
+ngBoilerplate also comes prepackaged with the most popular design frameworks
+around: [Twitter Bootstrap](http://getbootstrap.com),
+[Angular UI](http://angular-ui.github.io),
+[Angular Bootstrap](http://angular-ui.github.io/bootstrap),
+[Font Awesome](http://fortawesome.github.com/Font-Awesome), and
+[LESS](http://lesscss.org). Lastly, it contains a sophisticated
+[Grunt](http://gruntjs.org)-based build system to ensure maximum productivity.
+All you have to do is clone it and start coding!
+
+## Philosophy
+
+The principal goal of `ngBoilerplate` is to set projects up for long-term
+success.  So `ngBoilerplate` tries to follow best practices everywhere it can.
+These are:
+
+- Properly orchestrated modules to encourage drag-and-drop component re-use.
+- Tests exist alongside the component they are testing with no separate `test`
+  directory required; the build process should be sophisticated enough to handle
+  this.
+- Speaking of which, the build system should work automagically, without
+  involvement from the developer. It should do what needs to be done, while
+  staying out of the way. Components should end up tested, linted, compiled,
+  and minified, ready for use in a production environment.
+- Integration with popular tools like Bower, Karma, and LESS.
+- *Encourages* test-driven development. It's the only way to code.
+- A directory structure that is cogent, meaningful to new team members, and
+  supporting of the above points.
+- Well-documented, to show new developers *why* things are set up the way they
+  are.
+- It should be responsive to evidence. Community feedback is therefore crucial
+  to the success of `ngBoilerplate`.
+
+But `ngBoilerplate` is not an example of an AngularJS app: this is a
+kickstarter. If you're looking for an example of what a complete, non-trivial
+AngularJS app that does something real looks like, complete with a REST backend
+and authentication and authorization, then take a look at
+[`angular-app`](http://github.com/angular-app/angular-app), which does just
+that - and does it well.
+
+## Learn
+
+### Overall Directory Structure
+
+At a high level, the structure looks roughly like this:
+
 ### Structure
 ```
 ng-boilerplate/
@@ -63,28 +113,48 @@ ng-boilerplate/
   |  |- <bower components>
   |- test/
   |  | - <test written in jasmine>
+  |- build.config.js
   |- Gruntfile.js
   |- module.prefix
   |- module.suffix
   |- package.json
 ```
-What follows is a brief description of each entry, but all directories contain
+What follows is a brief description of each entry, but most directories contain
 their own `README.md` file with additional documentation, so browse around to
 learn more.
 
-- `build/` - custom scripts for Grunt.
+- `build/` - files needed to make everything happen, but *not* libraries our
+  application uses. [Read more &raquo;](build/README.md)
+- `karma/` - test configuration.
 - `src/` - our application sources. [Read more &raquo;](src/README.md)
-- `test` - test configuration.
-- `vendor` - files needed to make everything happen, but *not* libraries our
-  application uses. [Read more &raquo;](vendor/README.md)
+- `vendor/` - third-party libraries. [Bower](http://bower.io) will install
+  packages here. Anything added to this directory will need to be manually added
+  to `Gruntfile.js` and `karma/karma-unit.js` to be picked up by the build
+  system.
+- `.bowerrc` - the Bower configuration file. This tells Bower to install
+  components into the `vendor/` directory.
+- `bower.js` - this is our project configuration for Bower and it contains the
+  list of Bower dependencies we need.
+- `build.config.js` - our customizable build settings; see "The Build System"
+  below.
 - `Gruntfile.js` - our build script; see "The Build System" below.
 - `module.prefix` and `module.suffix` - our compiled application script is
   wrapped in these, which by default are used to place the application inside a
   self-executing anonymous function to ensure no clashes with other libraries.
-- `package.json` - metadata about the app, used by NPM and our build script.
+- `package.json` - metadata about the app, used by NPM and our build script. Our
+  NPM dependencies are listed here.
 
 
 ### Detailed Installation
+This section provides a little more detailed understanding of what goes into
+getting `ngBoilerplate` up and running. Though `ngBoilerplate` is really simple
+to use, it might help to have an understanding of the tools involved here, like
+Node.js and Grunt and Bower. If you're completely new to highly organized,
+modern JavaScript development, take a few short minutes to read [this overview
+of the tools](tools.md) before continuing with this section.
+
+Okay, ready to go? Here it is:
+
 This section provides a little more detailed understanding of what goes into
 getting `ngBoilerplate` up and running. Though `ngBoilerplate` is really simple
 to use, it might help to have an understanding of the tools involved here, like
@@ -105,7 +175,7 @@ $ npm -g install grunt-cli karma bower
 ```
 
 If you're on Linux (like I am) then throw `sudo` in front of that command.  If
-you're on Windows, you're on your own.
+you're on Windows, then you're on your own.
 
 Next, you can either clone this repository using Git, download it as a zip file
 from GitHub, or merge the branch into your existing repository. Assuming you're
@@ -138,7 +208,7 @@ In the future, should you want to add a new Bower package to your app, run the
 `install` command:
 
 ```sh
-$ bower install package-name --save-dev
+$ bower install packagename --save-dev
 ```
 
 The `--save-dev` flag tells Bower to add the package at its current version to
@@ -160,25 +230,39 @@ To ensure your setup works, launch grunt:
 $ grunt watch
 ```
 
-The built files are placed in the `build/` directory.  Open the
+The built files are placed in the `build/` directory by default. Open the
 `build/index.html` file in your browser and check it out! Because everything is
 compiled, no XHR requests are needed to retrieve templates, so until this needs
-to communicate with your backend, there is no need to run it from a web server.
+to communicate with your backend there is no need to run it from a web server.
 
-`watch` is actually an alias of the `grunt-contrib-watch` that will first run
-the partial build before watching for file changes. With this setup, any file
-that changes will trigger only those build tasks necessary to bring the app up
-to date. For example, when a template file changes, the templates are recompiled
-and concatenated with the rest of the JavaScript files, but when a test/spec
-file changes, only the tests are run. This allows the watch command to complete
-in a fraction of the time it would ordinarily take.
+`watch` is actually an alias of the `grunt-contrib-watch` that will first run a
+partial build before watching for file changes. With this setup, any file that
+changes will trigger only those build tasks necessary to bring the app up to
+date. For example, when a template file changes, the templates are recompiled
+and concatenated, but when a test/spec file changes, only the tests are run.
+This allows the watch command to complete in a fraction of the time it would
+ordinarily take.
 
 In addition, if you're running a Live Reload plugin in your browser (see below),
 you won't even have to refresh to see the changes! When the `watch` task detects
 a file change, it will reload the page for you. Sweet.
 
-However, a complete build is always available by simply running the default
-task:
+When you're ready to push your app into production, just run the `compile`
+command:
+
+```sh
+$ grunt compile
+```
+
+This will concatenate and minify your sources and place them by default into the
+`bin/` directory. There will only be three files: `index.html`,
+`your-app-name.js`, and `your-app-name.css`. All of the vendor dependencies like
+Bootstrap styles and AngularJS itself have been added to them for super-easy
+deploying. If you use any assets (`src/assets/`) then they will be copied to
+`bin/` as is.
+
+Lastly, a complete build is always available by simply running the default
+task, which runs `build` and then `compile`:
 
 ```sh
 $ grunt
@@ -192,36 +276,51 @@ script, `Gruntfile.js`. But what follows in this section is a quick introduction
 the tasks provided.
 
 The driver of the process is the `delta` multi-task, which watches for file
-changes using `grunt-contrib-watch` and executes one of seven tasks when a file
+changes using `grunt-contrib-watch` and executes one of nine tasks when a file
 changes:
 
 * `delta:gruntfile` - When `Gruntfile.js` changes, this task runs the linter
-  (`jshint`) on that one file and reload the configuration.
+  (`jshint`) on that one file and reloads the configuration.
 * `delta:assets` - When any file within `src/assets/` changes, all asset files
-  are copied to `dist/assets/`.
+  are copied to `build/assets/`.
 * `delta:html` - When `src/index.html` changes, it is compiled as a Grunt
   template, so script names, etc., are dynamically replaced with the correct
   values configured dynamically by Grunt.
-* `delta:sass` - When any `*.sass` file within `src/` changes, all
-  `src/sass/**/*.scss` files will be compiled, and compressed into
-  `dist/assets/ng-boilerplate.css`.
-* `delta:src` - When any JavaScript file within `src/` that does not end in
+* `delta:less` - When any `*.less` file within `src/` changes, the
+  `src/less/main.less` file is linted and copied into
+  `build/assets/ng-boilerplate.css`.
+* `delta:jssrc` - When any JavaScript file within `src/` that does not end in
   `.spec.js` changes, all JavaScript sources are linted, all unit tests are run,
   and the all source files are re-copied to `build/src`.
+* `delta:coffeesrc` - When any `*.coffee` file in `src/` that doesn't match
+  `*.spec.coffee` changes, the Coffee scripts are compiled independently into
+  `build/src` in a structure mirroring where they were in `src/` so it's easy to
+  locate problems. For example, the file
+  `src/common/titleService/titleService.coffee` is compiled to
+  `build/src/common/titleService/titleService.js`.
 * `delta:tpls` - When any `*.tpl.html` file within `src/` changes, all templates
   are put into strings in a JavaScript file (technically two, one for
-  `src/components/` and another for `src/app/`) that will add the template to
+  `src/common/` and another for `src/app/`) that will add the template to
   AngularJS's
   [`$templateCache`](http://docs.angularjs.org/api/ng.$templateCache) so
   template files are part of the initial JavaScript payload and do not require
   any future XHR.  The template cache files are `build/template-app.js` and
   `build/template-common.js`.
-* `delta:unittest` - When any `*.spec.js` file in `src/` changes, the test files
+* `delta:jsunit` - When any `*.spec.js` file in `src/` changes, the test files
   are linted and the unit tests are executed.
+* `delta:coffeeunit` - When any `*.spec.coffee` file in `src/` changes, the test
+  files are linted, compiled their tests executed.
 
 As covered in the previous section, `grunt watch` will execute a full build
 up-front and then run any of the aforementioned `delta:*` tasks as needed to
-ensure the fastest possible build.
+ensure the fastest possible build. So whenever you're working on your project,
+start with:
+
+```sh
+$ grunt watch
+```
+
+And everything will be done automatically!
 
 ### Build vs. Compile
 
@@ -241,13 +340,13 @@ $ grunt
 ```
 
 This will perform a build and then a compile. The compiled site - ready for
-uploading to the server! - are located in `bin/`, taking a cue from
+uploading to the server! - is located in `bin/`, taking a cue from
 traditional software development. To test that your full site works as
 expected, open the `bin/index.html` file in your browser. Voila!
 
 ### Live Reload!
 
-`ngBoilerplate` now includes [Live Reload](http://livereload.com/), so you no
+`ngBoilerplate` also includes [Live Reload](http://livereload.com/), so you no
 longer have to refresh your page after making changes! You need a Live Reload
 browser plugin for this:
 
@@ -296,20 +395,8 @@ Naturally, I am open to all manner of ideas and suggestions. See the
 
 ### To Do
 
-There isn't much of a demonstration of UI Bootstrap. I don't want to pollute the
-code with a demo for demo's sake, but I feel we should showcase it in some way.
-
-`ngBoilerplate` should include end-to-end tests. This should happen soon. I just 
-haven't had the time.
-
-A new `release` task for Grunt to handle all the Git stuff along with some nice
-semantic versioning helpers.
-
-The ability to choose whether to compile templates or leave them for XHR
-retrieval.
-
-Lastly, this site should be prettier, but I'm no web designer. Throw me a bone 
-here, people!
+See the [issues list](http://github.com/joshdmiller/ng-boilerplate/issues). And
+feel free to submit your own!
 
 ### Contributing
 
