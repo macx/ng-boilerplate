@@ -45,7 +45,6 @@
 ## Bug fixes
 ### build
 
-<<<<<<< HEAD
 * Removed unnecessary step from delta:unittest (5ffbfd7)
 
 * delta tasks that concat must also uglify (926983f)
@@ -95,7 +94,6 @@
 ## Features
 ### *
 
-<<<<<<< HEAD
 * Initial application structure ([7c149227](git@github.com:neoskop/ng-boilerplate/commits/7c149227))
 
 * improved navigation styling and added home page tpl ([e1a655e0](git@github.com:neoskop/ng-boilerplate/commits/e1a655e0))
