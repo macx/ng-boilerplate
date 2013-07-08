@@ -477,6 +477,7 @@ module.exports = function (grunt) {
         options: {
           configFile: '<%= build_dir %>/karma.e2e.conf.js'
         },
+        runnerPort: 9105,
         background: true
       },
 
@@ -647,7 +648,7 @@ module.exports = function (grunt) {
         files: [
           '<%= app_files.js %>'
         ],
-        tasks: ['jshint:src', 'karma:unit:run', 'karma:midway:run', 'copy:build_appjs']
+        tasks: ['jshint:src', 'karma:unit:run', 'karma:midway:run', 'karma:e2e:run', 'copy:build_appjs']
       },
 
       /**
@@ -658,7 +659,7 @@ module.exports = function (grunt) {
         files: [
           '<%= app_files.coffee %>'
         ],
-        tasks: [ 'coffeelint:src', 'coffee:source', 'karma:unit:run', 'karma:midway:run', 'copy:build_appjs' ]
+        tasks: [ 'coffeelint:src', 'coffee:source', 'karma:unit:run', 'karma:midway:run', 'karma:e2e:run', 'copy:build_appjs' ]
       },
 
       /**
@@ -775,7 +776,7 @@ module.exports = function (grunt) {
     watch: {
       name: 'watch',
       description: '',
-      definition: ['build', 'karma:unit', 'karma:midway', 'connect:livereload', 'delta']
+      definition: ['build', 'karma:unit', 'karma:midway', 'karma:e2e', 'connect:livereload', 'delta']
     },
 
     /**
@@ -805,8 +806,9 @@ module.exports = function (grunt) {
         'index:build',
         'karmaconfig',
         'karma:continuous_unit',
-        'karma:continuous_midway'
-    //'connect:testserver', 'karma:continuous_e2e'
+        'karma:continuous_midway',
+        'connect:testserver',
+        'karma:continuous_e2e'
       ]
     },
 

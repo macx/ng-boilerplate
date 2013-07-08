@@ -18,9 +18,9 @@ module.exports = function (karma) {
 
     frameworks: ['ng-scenario'],
     plugins: [
-      'karma-firefox-launcher', 
-      'karma-chrome-launcher', 
-      'karma-coffee-preprocessor', 
+      'karma-firefox-launcher',
+      'karma-chrome-launcher',
+      'karma-coffee-preprocessor',
       'karma-ng-scenario'
     ],
     preprocessors: {
@@ -37,8 +37,8 @@ module.exports = function (karma) {
      * operating, and what is the URL path for the browser to use.
      */
     port: 9018,
-    runnerPort: 9100,
-    urlRoot: '/',
+    runnerPort: 9104,
+    urlRoot: '/_e2e/',
 
     proxies: {
       '/': 'http://localhost:8000/'
@@ -47,7 +47,7 @@ module.exports = function (karma) {
     /**
      * Disable file watching by default.
      */
-    autoWatch: false,
+    autoWatch: true,
 
     /**
      * The list of browsers to launch to test on. This includes only "Firefox" by

@@ -8,7 +8,6 @@ describe('ngBoilerplate', function () {
 
   it('should navigate to /home when / is accessed', function () {
     browser().navigateTo('#/');
-    //expect(browser().location().url()).toEqual('/home');
-    expect(true).toBe(false);
+    expect(browser().location().path()).toEqual('/home');
   });
 });
