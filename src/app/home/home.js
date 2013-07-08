@@ -13,7 +13,7 @@
  * The dependencies block here is also where component dependencies should be
  * specified, as shown below.
  */
-angular.module( 'ngBoilerplate.home', [
+angular.module('ngBoilerplate.home', [
   'templates-app',
   'templates-common',
   'ui.state',
@@ -25,8 +25,8 @@ angular.module( 'ngBoilerplate.home', [
  * will handle ensuring they are all available at run-time, but splitting it
  * this way makes each module more "self-contained".
  */
-.config(function config( $stateProvider ) {
-  $stateProvider.state( 'home', {
+.config(function config($stateProvider) {
+  $stateProvider.state('home', {
     url: '/home',
     views: {
       'main': {
