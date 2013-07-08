@@ -319,7 +319,7 @@ module.exports = function (grunt) {
         },
         files: {
           '<%= compass.build.options.cssDir %>/main.css': [
-            '<%= build_dir %>/vendor/**/*.css',
+            '<%= vendor_files.css %>',
             '<%= compass.build.options.cssDir %>/main.css'
           ]
         }
@@ -535,8 +535,7 @@ module.exports = function (grunt) {
         dir: '<%= compile_dir %>',
         src: [
           '<%= concat.compile_js.dest %>',
-          '<%= vendor_files.css %>',
-          '<%= compile_dir %>/assets/css/<%= pkg.name %>.css'
+          '<%= compile_dir %>/assets/css/main.css'
         ]
       }
     },
