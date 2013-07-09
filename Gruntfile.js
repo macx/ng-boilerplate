@@ -259,7 +259,7 @@ module.exports = function (grunt) {
        * API section configuration. Defines source files and a section title.
        */
       api: {
-        src: ['<%= src.js %>', 'docs/content/api/*.ngdoc'],
+        src: ['<%= app_files.js %>', 'docs/content/api/*.ngdoc'],
         title: 'API Reference'
       },
 
