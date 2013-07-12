@@ -845,7 +845,7 @@ module.exports = function (grunt) {
 
     release: {
       name: 'release',
-      taskDefinition: ['changelog']
+      definition: ['changelog']
     }
   };
 
