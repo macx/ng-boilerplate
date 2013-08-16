@@ -337,7 +337,7 @@ module.exports = function (grunt) {
     jshint: {
 
       options: {
-        jshintrc: '.jshintrc',
+        jshintrc: '.jshintrc'
       },
 
       src: {
@@ -446,7 +446,7 @@ module.exports = function (grunt) {
        */
       common: {
         options: {
-          base: 'src/common',
+          base: 'src/common'
         },
         src: ['<%= app_files.ctpl %>'],
         dest: '<%= build_dir %>/templates-common.js'
@@ -555,7 +555,7 @@ module.exports = function (grunt) {
           '<%= vendor_files.js %>',
           'vendor/angular-mocks/angular-mocks.js',
           '<%= html2js.app.dest %>',
-          '<%= html2js.common.dest %>',
+          '<%= html2js.common.dest %>'
         ]
       },
 
@@ -578,7 +578,7 @@ module.exports = function (grunt) {
         src: [
           '<%= vendor_files.js %>',
           '<%= html2js.app.dest %>',
-          '<%= html2js.common.dest %>',
+          '<%= html2js.common.dest %>'
         ]
       }
     },
