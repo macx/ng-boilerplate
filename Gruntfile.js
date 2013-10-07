@@ -461,7 +461,7 @@ module.exports = function (grunt) {
         options: {
           configFile: '<%= build_dir %>/karma.unit.conf.js'
         },
-        runnerPort: 9102,
+        port: 9102,
         background: true
       },
 
@@ -469,7 +469,7 @@ module.exports = function (grunt) {
         options: {
           configFile: '<%= build_dir %>/karma.midway.conf.js'
         },
-        runnerPort: 9103,
+        port: 9103,
         background: true
       },
 
@@ -477,7 +477,7 @@ module.exports = function (grunt) {
         options: {
           configFile: '<%= build_dir %>/karma.e2e.conf.js'
         },
-        runnerPort: 9105,
+        port: 9105,
         background: true
       },
 
