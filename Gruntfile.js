@@ -565,7 +565,7 @@ module.exports = function (grunt) {
         tplFile: 'karma/karma.midway.tpl.js',
         src: [
           '<%= vendor_files.js %>',
-          'vendor/ngMidwayTester/Source/ngMidwayTester.js',
+          'vendor/ngMidwayTester/src/ngMidwayTester.js',
           '<%= html2js.app.dest %>',
           '<%= html2js.common.dest %>'
         ]

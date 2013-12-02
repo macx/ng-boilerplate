@@ -9,11 +9,15 @@ describe('ngBoilerplate', function () {
   };
 
   beforeEach(function () {
-    tester = new ngMidwayTester();
-    tester.register('ngBoilerplate');
+    tester = ngMidwayTester('ngBoilerplate');
 
     module = angular.module('ngBoilerplate');
     deps = module.value('ngBoilerplate').requires;
+  });
+
+  afterEach(function () {
+    tester.destroy();
+    tester = null;
   });
 
   it('should be registered', function () {
