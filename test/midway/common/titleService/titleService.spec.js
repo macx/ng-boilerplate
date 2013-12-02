@@ -5,11 +5,14 @@ describe('titleService', function () {
   var module, deps, tester;
 
   beforeEach(function () {
-    tester = new ngMidwayTester();
-    tester.register('titleService');
-
+    tester = new ngMidwayTester('titleService');
     module = angular.module('titleService');
     deps = module.value('titleService').requires;
+  });
+
+  afterEach(function () {
+    tester.destroy();
+    tester = null;
   });
 
   it('should be registered', function () {
