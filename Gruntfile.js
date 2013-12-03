@@ -870,6 +870,40 @@ module.exports = function (grunt) {
       ]
     },
 
+    buildWithTheme: {
+      name: 'build-with-theme',
+      definition: function (grunt) {
+        return function () {
+          if (arguments.length === 0) {
+            grunt.log.error('No theme specified! Please provide a theme á la: "grunt build-with-theme:themeName"');
+            return false;
+          } else {
+            grunt.task.run([
+              'clean',
+              'copy:default_app_tpls',
+              'copy:default_common_tpls',
+              'html2js',
+              'clean:tmp',
+              'jshint',
+              'coffeelint',
+              'coffee',
+              'compass:build',
+              'copy:build_assets',
+              'copy:build_appjs',
+              'copy:build_vendorjs',
+              'copy:build_vendorcss',
+              'index:build',
+              'karmaconfig',
+              'karma:continuous_unit',
+              'karma:continuous_midway',
+              'connect:testserver',
+              'karma:continuous_e2e'
+            ]);
+          }
+        };
+      }
+    },
+
     /**
      * quick-build task which gets executed by travis. We have to decouple this one
      * from build task, because travis ci can't handle compass/sass etc.
