@@ -19,6 +19,11 @@ module.exports = {
   sass_dir: 'src/scss',
   test_dir: 'test',
 
+  app_base: 'src/app',
+  common_base: 'src/common',
+
+  default_tpl_pattern: '**/*.tpl.html',
+
   /*
   * This is a collection of file patterns that refer to our app code (the
   * stuff in `src/`). These file paths are used in the configuration of
@@ -39,8 +44,8 @@ module.exports = {
     coffeemidway: ['<%= test_dir %>/midway/**/*.spec.coffee'],
     coffeee2e: ['<%= test_dir %>/e2e/**/*.spec.coffee'],
 
-    atpl: ['src/app/**/*.tpl.html'],
-    ctpl: ['src/common/**/*.tpl.html'],
+    atpl: ['<%= app_base %>/<%= default_tpl_pattern %>'],
+    ctpl: ['<%= common_base %>/<%= default_tpl_pattern %>'],
 
     html: ['src/index.html'],
     scss: ['<%= sass_dir %>/**/*.scss']

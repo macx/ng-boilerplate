@@ -34,6 +34,12 @@ module.exports = function (grunt) {
    * instructions.
    */
   var taskConfig = {
+
+    /**
+     * Folder which is used temporarily during build process. You'll actually never see it.
+     */
+    tmp_dir: 'tmp',
+
     /**
      * We read in our `package.json` file so we can access the package name and
      * version. It's already there, so we don't repeat ourselves here.
@@ -92,7 +98,19 @@ module.exports = function (grunt) {
     /**
      * The directories to delete when `grunt clean` is executed.
      */
-    clean: ['<%= build_dir %>', '<%= compile_dir %>'],
+    clean: {
+      build: {
+        src: '<%= build_dir %>'
+      },
+
+      compile: {
+        src: '<%= compile_dir %>'
+      },
+
+      tmp: {
+        src: '<%= tmp_dir %>'
+      }
+    },
 
     /**
      * The `copy` task just copies files from A to B. We use it here to copy
@@ -152,6 +170,44 @@ module.exports = function (grunt) {
             dest: '<%= compile_dir %>/assets',
             cwd: '<%= build_dir %>/assets',
             expand: true
+          }
+        ]
+      },
+
+      default_app_tpls: {
+        files: [
+          {
+            src: ['<%= default_tpl_pattern %>'],
+            dest: '<%= tmp_dir %>',
+            cwd: '<%= app_base %>',
+            expand: true
+          }
+        ]
+      },
+
+      default_common_tpls: {
+        files: [
+          {
+            src: ['<%= default_tpl_pattern %>'],
+            dest: '<%= tmp_dir %>',
+            cwd: '<%= common_base %>',
+            expand: true
+          }
+        ]
+      },
+
+      theme_tpls: {
+        files: [
+          {
+            src: ['**/theme/*.tpl.html'],
+            dest: 'tmp/',
+            cwd: 'src/app',
+            expand: true,
+            rename: function (dest, src) {
+              console.log('dest', dest);
+              console.log('src', src);
+              return dest + src.replace('theme/', '');
+            }
           }
         ]
       }
@@ -435,7 +491,7 @@ module.exports = function (grunt) {
        */
       app: {
         options: {
-          base: 'src/app'
+          base: '<%= app_base %>'
         },
         src: [ '<%= app_files.atpl %>' ],
         dest: '<%= build_dir %>/templates-app.js'
@@ -446,7 +502,7 @@ module.exports = function (grunt) {
        */
       common: {
         options: {
-          base: 'src/common'
+          base: '<%= app_base %>'
         },
         src: ['<%= app_files.ctpl %>'],
         dest: '<%= build_dir %>/templates-common.js'
@@ -793,7 +849,10 @@ module.exports = function (grunt) {
       name: 'build',
       definition: [
         'clean',
+        'copy:default_app_tpls',
+        'copy:default_common_tpls',
         'html2js',
+        'clean:tmp',
         'jshint',
         'coffeelint',
         'coffee',
