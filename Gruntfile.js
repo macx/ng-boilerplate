@@ -17,7 +17,7 @@ module.exports = function (grunt) {
    * Load required Grunt tasks. These are installed based on the versions listed
    * in `package.json` when you do `npm install --save-dev` in this directory.
    */
-  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+  require('load-grunt-tasks')(grunt);
 
   /**
    * Load in our build configuration file.
