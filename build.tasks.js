@@ -10,5 +10,17 @@ module.exports = {
         console.dir(grunt);
       };
     }
-  }
+  },
+
+  /*watchTaskWithTheme: {
+    name: 'watch',
+    description: '',
+    definition: [
+      'build-with-theme:tecalor',
+      'karma:unit',
+      'karma:midway',
+      'connect:livereload',
+      'delta'
+    ]
+  }*/
 };

@@ -177,8 +177,14 @@ module.exports = function (grunt) {
       default_app_tpls: {
         files: [
           {
-            src: ['<%= default_tpl_pattern %>'],
-            dest: '<%= tmp_dir %>',
+            src: (function () {
+              var src = ['<%= default_tpl_pattern %>'];
+              userConfig.themes.forEach(function (theme) {
+                src.push('!**/'+theme+'/*.tpl.html');
+              });
+              return src;
+            }()),
+            dest: '<%= tmp_dir %>/',
             cwd: '<%= app_base %>',
             expand: true
           }
@@ -188,25 +194,45 @@ module.exports = function (grunt) {
       default_common_tpls: {
         files: [
           {
-            src: ['<%= default_tpl_pattern %>'],
-            dest: '<%= tmp_dir %>',
+            src: (function () {
+              var src = ['<%= default_tpl_pattern %>'];
+              userConfig.themes.forEach(function (theme) {
+                src.push('!**/'+theme+'/*.tpl.html');
+              });
+              return src;
+            }()),
+            dest: '<%= tmp_dir %>/',
             cwd: '<%= common_base %>',
             expand: true
           }
         ]
       },
 
-      theme_tpls: {
+      theme_app_tpls: {
         files: [
           {
-            src: ['**/theme/*.tpl.html'],
-            dest: 'tmp/',
-            cwd: 'src/app',
+            src: ['**/<%= themename %>/*.tpl.html'],
+            dest: '<%= tmp_dir %>/',
+            cwd: '<%= app_base %>',
             expand: true,
             rename: function (dest, src) {
-              console.log('dest', dest);
-              console.log('src', src);
-              return dest + src.replace('theme/', '');
+              var newDest = dest + src.replace(grunt.config.get('themename') +'/', '');
+              return newDest;
+            }
+          }
+        ]
+      },
+
+      theme_common_tpls: {
+        files: [
+          {
+            src: ['**/<%= themename %>/*.tpl.html'],
+            dest: '<%= tmp_dir %>/',
+            cwd: '<%= common_base %>',
+            expand: true,
+            rename: function (dest, src) {
+              var newDest = dest + src.replace(grunt.config.get('themename') +'/', '');
+              return newDest;
             }
           }
         ]
@@ -491,9 +517,9 @@ module.exports = function (grunt) {
        */
       app: {
         options: {
-          base: '<%= app_base %>'
+          base: '<%= tmp_dir %>'
         },
-        src: [ '<%= app_files.atpl %>' ],
+        src: [ '<%= tmp_dir %>/<%= default_tpl_pattern %>' ],
         dest: '<%= build_dir %>/templates-app.js'
       },
 
@@ -502,9 +528,9 @@ module.exports = function (grunt) {
        */
       common: {
         options: {
-          base: '<%= app_base %>'
+          base: '<%= tmp_dir %>'
         },
-        src: ['<%= app_files.ctpl %>'],
+        src: ['<%= tmp_dir %>/<%= default_tpl_pattern %>'],
         dest: '<%= build_dir %>/templates-common.js'
       }
     },
@@ -873,15 +899,18 @@ module.exports = function (grunt) {
     buildWithTheme: {
       name: 'build-with-theme',
       definition: function (grunt) {
-        return function () {
+        return function (themeName) {
           if (arguments.length === 0) {
             grunt.log.error('No theme specified! Please provide a theme á la: "grunt build-with-theme:themeName"');
             return false;
           } else {
+            grunt.config.set('themename', themeName);
             grunt.task.run([
               'clean',
               'copy:default_app_tpls',
               'copy:default_common_tpls',
+              'copy:theme_app_tpls',
+              'copy:theme_common_tpls',
               'html2js',
               'clean:tmp',
               'jshint',
@@ -895,9 +924,9 @@ module.exports = function (grunt) {
               'index:build',
               'karmaconfig',
               'karma:continuous_unit',
-              'karma:continuous_midway',
+              'karma:continuous_midway'/*,
               'connect:testserver',
-              'karma:continuous_e2e'
+              'karma:continuous_e2e'*/
             ]);
           }
         };
@@ -1006,7 +1035,16 @@ module.exports = function (grunt) {
       return file.replace(dirRE, '');
     });
 
-    grunt.file.copy('src/index.html', this.data.dir + '/index.html', {
+    var src,
+        theme;
+
+    if ((theme = grunt.config.get('themename')) && theme) {
+      src = 'src/'+ theme +'/index.html';
+    } else {
+      src = 'src/index.html';
+    }
+
+    grunt.file.copy(src, this.data.dir + '/index.html', {
       process: function (contents) {
         return grunt.template.process( contents, {
           data: {
@@ -1037,5 +1075,4 @@ module.exports = function (grunt) {
       }
     });
   });
-
 };

@@ -24,6 +24,8 @@ module.exports = {
 
   default_tpl_pattern: '**/*.tpl.html',
 
+  themes: [],
+
   /*
   * This is a collection of file patterns that refer to our app code (the
   * stuff in `src/`). These file paths are used in the configuration of
