@@ -34,6 +34,12 @@ module.exports = function (grunt) {
    * instructions.
    */
   var taskConfig = {
+
+    /**
+     * Folder which is used temporarily during build process. You'll actually never see it.
+     */
+    tmp_dir: 'tmp',
+
     /**
      * We read in our `package.json` file so we can access the package name and
      * version. It's already there, so we don't repeat ourselves here.
@@ -92,7 +98,19 @@ module.exports = function (grunt) {
     /**
      * The directories to delete when `grunt clean` is executed.
      */
-    clean: ['<%= build_dir %>', '<%= compile_dir %>'],
+    clean: {
+      build: {
+        src: '<%= build_dir %>'
+      },
+
+      compile: {
+        src: '<%= compile_dir %>'
+      },
+
+      tmp: {
+        src: '<%= tmp_dir %>'
+      }
+    },
 
     /**
      * The `copy` task just copies files from A to B. We use it here to copy
@@ -152,6 +170,70 @@ module.exports = function (grunt) {
             dest: '<%= compile_dir %>/assets',
             cwd: '<%= build_dir %>/assets',
             expand: true
+          }
+        ]
+      },
+
+      default_app_tpls: {
+        files: [
+          {
+            src: (function () {
+              var src = ['<%= default_tpl_pattern %>'];
+              userConfig.themes.forEach(function (theme) {
+                src.push('!**/'+theme+'/*.tpl.html');
+              });
+              return src;
+            }()),
+            dest: '<%= tmp_dir %>/',
+            cwd: '<%= app_base %>',
+            expand: true
+          }
+        ]
+      },
+
+      default_common_tpls: {
+        files: [
+          {
+            src: (function () {
+              var src = ['<%= default_tpl_pattern %>'];
+              userConfig.themes.forEach(function (theme) {
+                src.push('!**/'+theme+'/*.tpl.html');
+              });
+              return src;
+            }()),
+            dest: '<%= tmp_dir %>/',
+            cwd: '<%= common_base %>',
+            expand: true
+          }
+        ]
+      },
+
+      theme_app_tpls: {
+        files: [
+          {
+            src: ['**/<%= themename %>/*.tpl.html'],
+            dest: '<%= tmp_dir %>/',
+            cwd: '<%= app_base %>',
+            expand: true,
+            rename: function (dest, src) {
+              var newDest = dest + src.replace(grunt.config.get('themename') +'/', '');
+              return newDest;
+            }
+          }
+        ]
+      },
+
+      theme_common_tpls: {
+        files: [
+          {
+            src: ['**/<%= themename %>/*.tpl.html'],
+            dest: '<%= tmp_dir %>/',
+            cwd: '<%= common_base %>',
+            expand: true,
+            rename: function (dest, src) {
+              var newDest = dest + src.replace(grunt.config.get('themename') +'/', '');
+              return newDest;
+            }
           }
         ]
       }
@@ -435,9 +517,9 @@ module.exports = function (grunt) {
        */
       app: {
         options: {
-          base: 'src/app'
+          base: '<%= tmp_dir %>'
         },
-        src: [ '<%= app_files.atpl %>' ],
+        src: [ '<%= tmp_dir %>/<%= default_tpl_pattern %>' ],
         dest: '<%= build_dir %>/templates-app.js'
       },
 
@@ -446,9 +528,9 @@ module.exports = function (grunt) {
        */
       common: {
         options: {
-          base: 'src/common'
+          base: '<%= tmp_dir %>'
         },
-        src: ['<%= app_files.ctpl %>'],
+        src: ['<%= tmp_dir %>/<%= default_tpl_pattern %>'],
         dest: '<%= build_dir %>/templates-common.js'
       }
     },
@@ -793,7 +875,10 @@ module.exports = function (grunt) {
       name: 'build',
       definition: [
         'clean',
+        'copy:default_app_tpls',
+        'copy:default_common_tpls',
         'html2js',
+        'clean:tmp',
         'jshint',
         'coffeelint',
         'coffee',
@@ -809,6 +894,43 @@ module.exports = function (grunt) {
         'connect:testserver',
         'karma:continuous_e2e'
       ]
+    },
+
+    buildWithTheme: {
+      name: 'build-with-theme',
+      definition: function (grunt) {
+        return function (themeName) {
+          if (arguments.length === 0) {
+            grunt.log.error('No theme specified! Please provide a theme á la: "grunt build-with-theme:themeName"');
+            return false;
+          } else {
+            grunt.config.set('themename', themeName);
+            grunt.task.run([
+              'clean',
+              'copy:default_app_tpls',
+              'copy:default_common_tpls',
+              'copy:theme_app_tpls',
+              'copy:theme_common_tpls',
+              'html2js',
+              'clean:tmp',
+              'jshint',
+              'coffeelint',
+              'coffee',
+              'compass:build',
+              'copy:build_assets',
+              'copy:build_appjs',
+              'copy:build_vendorjs',
+              'copy:build_vendorcss',
+              'index:build',
+              'karmaconfig',
+              'karma:continuous_unit',
+              'karma:continuous_midway'/*,
+              'connect:testserver',
+              'karma:continuous_e2e'*/
+            ]);
+          }
+        };
+      }
     },
 
     /**
@@ -913,7 +1035,16 @@ module.exports = function (grunt) {
       return file.replace(dirRE, '');
     });
 
-    grunt.file.copy('src/index.html', this.data.dir + '/index.html', {
+    var src,
+        theme;
+
+    if ((theme = grunt.config.get('themename')) && theme) {
+      src = 'src/'+ theme +'/index.html';
+    } else {
+      src = 'src/index.html';
+    }
+
+    grunt.file.copy(src, this.data.dir + '/index.html', {
       process: function (contents) {
         return grunt.template.process( contents, {
           data: {
@@ -944,5 +1075,4 @@ module.exports = function (grunt) {
       }
     });
   });
-
 };
