@@ -292,6 +292,22 @@ module.exports = function (grunt) {
           'module.suffix'
         ],
         dest: '<%= compile_dir %>/assets/js/<%= pkg.name %>.js'
+      },
+
+      compile_js_with_theme: {
+        options: {
+          banner: '<%= meta.banner %>'
+        },
+        src: [
+          '<%= vendor_files.js %>',
+          '<%= themevendorjs %>',
+          'module.prefix',
+          '<%= build_dir %>/src/**/*.js',
+          '<%= html2js.app.dest %>',
+          '<%= html2js.common.dest %>',
+          'module.suffix'
+        ],
+        dest: '<%= compile_dir %>/assets/js/<%= pkg.name %>.js'
       }
     },
 
@@ -424,6 +440,19 @@ module.exports = function (grunt) {
         files: {
           '<%= compass.build.options.cssDir %>/main.css': [
             '<%= vendor_files.css %>',
+            '<%= compass.build.options.cssDir %>/main.css'
+          ]
+        }
+      },
+      compile_with_theme: {
+        options: {
+          banner: '<%= meta.banner %>',
+          report: 'gzip'
+        },
+        files: {
+          '<%= compass.build.options.cssDir %>/main.css': [
+            '<%= vendor_files.css %>',
+            '<%= themevendorcss %>',
             '<%= compass.build.options.cssDir %>/main.css'
           ]
         }
@@ -620,6 +649,18 @@ module.exports = function (grunt) {
        * `src` property contains the list of included files.
        */
       build: {
+        dir: '<%= build_dir %>',
+        src: [
+          '<%= vendor_files.js %>',
+          '<%= build_dir %>/src/**/*.js',
+          '<%= html2js.common.dest %>',
+          '<%= html2js.app.dest %>',
+          '<%= vendor_files.css %>',
+          '<%= compass.build.options.cssDir %>/**/*.css'
+        ]
+      },
+
+      build_with_theme: {
         dir: '<%= build_dir %>',
         src: [
           '<%= vendor_files.js %>',
@@ -926,8 +967,8 @@ module.exports = function (grunt) {
         return function (themeName) {
           var vendorFiles = grunt.config('vendor_files');
           var themeVendorFiles = vendorFiles[(grunt.config('themename')) ? grunt.config('themename') : themeName];
-          grunt.config.set('themevendorjs', themeVendorFiles.js || []);
-          grunt.config.set('themevendorcss', themeVendorFiles.css || []);
+          grunt.config.set('themevendorjs', themeVendorFiles.js || ['']);
+          grunt.config.set('themevendorcss', themeVendorFiles.css || ['']);
         };
       }
     },
@@ -960,7 +1001,7 @@ module.exports = function (grunt) {
               'determine-theme-vendor-files',
               'copy:build_themevendorjs',
               'copy:build_themevendorcss',
-              'index:build',
+              'index:build_with_theme',
               'karmaconfig',
               'karma:continuous_unit',
               'karma:continuous_midway'/*,

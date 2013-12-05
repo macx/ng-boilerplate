@@ -24,7 +24,7 @@ module.exports = {
 
   default_tpl_pattern: '**/*.tpl.html',
 
-  themes: [/*'tecalor'*/],
+  themes: ['tecalor'],
 
   /*
   * This is a collection of file patterns that refer to our app code (the
@@ -77,7 +77,9 @@ module.exports = {
     ],
     /*tecalor: {
       js: [],
-      css: []
+      css: [
+        'vendor/normalize-css/normalize.css'
+      ]
     }*/
   }
 };
