@@ -414,13 +414,24 @@ module.exports = function (grunt) {
     },
 
     /**
-     * use grunt-contrib-compass for sass with compass compiling
+     * Use grunt-contrib-compass for sass with compass compiling.
+     * grunt compass `specify` is used to limit the files which will be compiled:
+     * see: https://npmjs.org/package/grunt-compass
      */
     compass: {
       build: {
         options: {
           sassDir: '<%= sass_dir %>',
           cssDir: '<%= build_dir %>/assets/css',
+          specify: '<%= sass_dir %>/*.scss',
+          debugInfo: true
+        }
+      },
+      build_with_theme: {
+        options: {
+          sassDir: '<%= sass_dir %>',
+          cssDir: '<%= build_dir %>/assets/css',
+          specify: '<%= sass_dir %>/<%= themename %>/*.scss',
           debugInfo: true
         }
       }
@@ -993,7 +1004,7 @@ module.exports = function (grunt) {
               'jshint',
               'coffeelint',
               'coffee',
-              'compass:build',
+              'compass:build_with_theme',
               'copy:build_assets',
               'copy:build_appjs',
               'copy:build_vendorjs',
