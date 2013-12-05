@@ -236,6 +236,28 @@ module.exports = function (grunt) {
             }
           }
         ]
+      },
+
+      build_themevendorjs: {
+        files: [
+          {
+            src: [ '<%= themevendorjs %>' ],
+            dest: '<%= build_dir %>/',
+            cwd: '.',
+            expand: true
+          }
+        ]
+      },
+
+      build_themevendorcss: {
+        files: [
+          {
+            src: ['<%= themevendorcss %>'],
+            dest: '<%= build_dir %>/',
+            cwd: '.',
+            expand: true
+          }
+        ]
       }
     },
 
@@ -263,6 +285,22 @@ module.exports = function (grunt) {
         },
         src: [
           '<%= vendor_files.js %>',
+          'module.prefix',
+          '<%= build_dir %>/src/**/*.js',
+          '<%= html2js.app.dest %>',
+          '<%= html2js.common.dest %>',
+          'module.suffix'
+        ],
+        dest: '<%= compile_dir %>/assets/js/<%= pkg.name %>.js'
+      },
+
+      compile_js_with_theme: {
+        options: {
+          banner: '<%= meta.banner %>'
+        },
+        src: [
+          '<%= vendor_files.js %>',
+          '<%= themevendorjs %>',
           'module.prefix',
           '<%= build_dir %>/src/**/*.js',
           '<%= html2js.app.dest %>',
@@ -402,6 +440,19 @@ module.exports = function (grunt) {
         files: {
           '<%= compass.build.options.cssDir %>/main.css': [
             '<%= vendor_files.css %>',
+            '<%= compass.build.options.cssDir %>/main.css'
+          ]
+        }
+      },
+      compile_with_theme: {
+        options: {
+          banner: '<%= meta.banner %>',
+          report: 'gzip'
+        },
+        files: {
+          '<%= compass.build.options.cssDir %>/main.css': [
+            '<%= vendor_files.css %>',
+            '<%= themevendorcss %>',
             '<%= compass.build.options.cssDir %>/main.css'
           ]
         }
@@ -605,6 +656,20 @@ module.exports = function (grunt) {
           '<%= html2js.common.dest %>',
           '<%= html2js.app.dest %>',
           '<%= vendor_files.css %>',
+          '<%= compass.build.options.cssDir %>/**/*.css'
+        ]
+      },
+
+      build_with_theme: {
+        dir: '<%= build_dir %>',
+        src: [
+          '<%= vendor_files.js %>',
+          '<%= themevendorjs %>',
+          '<%= build_dir %>/src/**/*.js',
+          '<%= html2js.common.dest %>',
+          '<%= html2js.app.dest %>',
+          '<%= vendor_files.css %>',
+          '<%= themevendorcss %>',
           '<%= compass.build.options.cssDir %>/**/*.css'
         ]
       },
@@ -896,6 +961,18 @@ module.exports = function (grunt) {
       ]
     },
 
+    determineVendorFiles: {
+      name: 'determine-theme-vendor-files',
+      definition: function (grunt) {
+        return function (themeName) {
+          var vendorFiles = grunt.config('vendor_files');
+          var themeVendorFiles = vendorFiles[(grunt.config('themename')) ? grunt.config('themename') : themeName];
+          grunt.config.set('themevendorjs', themeVendorFiles.js || ['']);
+          grunt.config.set('themevendorcss', themeVendorFiles.css || ['']);
+        };
+      }
+    },
+
     buildWithTheme: {
       name: 'build-with-theme',
       definition: function (grunt) {
@@ -921,7 +998,10 @@ module.exports = function (grunt) {
               'copy:build_appjs',
               'copy:build_vendorjs',
               'copy:build_vendorcss',
-              'index:build',
+              'determine-theme-vendor-files',
+              'copy:build_themevendorjs',
+              'copy:build_themevendorcss',
+              'index:build_with_theme',
               'karmaconfig',
               'karma:continuous_unit',
               'karma:continuous_midway'/*,

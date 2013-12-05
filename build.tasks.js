@@ -12,7 +12,12 @@ module.exports = {
     }
   },
 
-  /*watchTaskWithTheme: {
+  /*defaultTaskWithTheme: {
+    name: 'default',
+    definition: ['build-with-theme:tecalor', 'compile']
+  },
+
+  watchTaskWithTheme: {
     name: 'watch',
     description: '',
     definition: [
@@ -21,6 +26,17 @@ module.exports = {
       'karma:midway',
       'connect:livereload',
       'delta'
+    ]
+  },
+  compileTaskWithTheme: {
+    name: 'compile',
+    definition: [
+      'cssmin:compile_with_theme',
+      'copy:compile_assets',
+      'ngmin',
+      'concat:compile_js_with_theme',
+      'uglify',
+      'index:compile'
     ]
   }*/
 };
