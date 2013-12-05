@@ -236,6 +236,28 @@ module.exports = function (grunt) {
             }
           }
         ]
+      },
+
+      build_themevendorjs: {
+        files: [
+          {
+            src: [ '<%= themevendorjs %>' ],
+            dest: '<%= build_dir %>/',
+            cwd: '.',
+            expand: true
+          }
+        ]
+      },
+
+      build_themevendorcss: {
+        files: [
+          {
+            src: ['<%= themevendorcss %>'],
+            dest: '<%= build_dir %>/',
+            cwd: '.',
+            expand: true
+          }
+        ]
       }
     },
 
@@ -601,10 +623,12 @@ module.exports = function (grunt) {
         dir: '<%= build_dir %>',
         src: [
           '<%= vendor_files.js %>',
+          '<%= themevendorjs %>',
           '<%= build_dir %>/src/**/*.js',
           '<%= html2js.common.dest %>',
           '<%= html2js.app.dest %>',
           '<%= vendor_files.css %>',
+          '<%= themevendorcss %>',
           '<%= compass.build.options.cssDir %>/**/*.css'
         ]
       },
@@ -896,6 +920,18 @@ module.exports = function (grunt) {
       ]
     },
 
+    determineVendorFiles: {
+      name: 'determine-theme-vendor-files',
+      definition: function (grunt) {
+        return function (themeName) {
+          var vendorFiles = grunt.config('vendor_files');
+          var themeVendorFiles = vendorFiles[(grunt.config('themename')) ? grunt.config('themename') : themeName];
+          grunt.config.set('themevendorjs', themeVendorFiles.js || []);
+          grunt.config.set('themevendorcss', themeVendorFiles.css || []);
+        };
+      }
+    },
+
     buildWithTheme: {
       name: 'build-with-theme',
       definition: function (grunt) {
@@ -921,6 +957,9 @@ module.exports = function (grunt) {
               'copy:build_appjs',
               'copy:build_vendorjs',
               'copy:build_vendorcss',
+              'determine-theme-vendor-files',
+              'copy:build_themevendorjs',
+              'copy:build_themevendorcss',
               'index:build',
               'karmaconfig',
               'karma:continuous_unit',
