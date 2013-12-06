@@ -464,7 +464,7 @@ module.exports = function (grunt) {
           '<%= compass.build.options.cssDir %>/main.css': [
             '<%= vendor_files.css %>',
             '<%= themevendorcss %>',
-            '<%= compass.build.options.cssDir %>/main.css'
+            '<%= compass.build.options.cssDir %>/<%= themename %>/main.css'
           ]
         }
       }
