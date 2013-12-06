@@ -1129,7 +1129,7 @@ module.exports = function (grunt) {
     var src,
         theme;
 
-    if ((theme = grunt.config.get('themename')) && theme) {
+    if ((theme = grunt.config.get('themename')) && theme && grunt.file.exists('src/'+theme+'/index.html')) {
       src = 'src/'+ theme +'/index.html';
     } else {
       src = 'src/index.html';
