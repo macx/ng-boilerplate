@@ -1,0 +1,9 @@
+@import "compass";
+
+@import '_test/foobar.scss';
+
+body {
+  background: red;
+  color: green;
+  border: 1px solid white;
+}
